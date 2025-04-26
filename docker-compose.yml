@@ -1,0 +1,50 @@
+services:
+  frontend:
+    container_name: uw_club_reviewer_frontend
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./apps/frontend:/app
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    env_file:
+      - ./apps/frontend/.env
+  ts-backend:
+    container_name: uw_club_reviewer_backend
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./apps/backend:/app
+      - /app/node_modules
+    ports:
+      - 8080:8080
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./.env
+  db:
+    container_name: uw_club_reviewer_db
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-config:/etc/mysql/conf.d
+    env_file:
+      - ./.env
+    environment:
+      - MYSQL_MULTIPLE_DATABASES=${DB_DEV},${DB_TEST}
+      - MYSQL_RANDOM_ROOT_PASSWORD=root_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 2
+      start_period: 0s
+
+volumes:
+  mysql_data:
