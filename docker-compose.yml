@@ -38,7 +38,7 @@ services:
       - ./.env
     environment:
       - MYSQL_MULTIPLE_DATABASES=${DB_DEV},${DB_TEST}
-      - MYSQL_DATABASE=uw_club_reviewer_backend
+      - MYSQL_DATABASE=uw_club_reviewer_dev
       - MYSQL_USER=user
       - MYSQL_ROOT_PASSWORD=password
     healthcheck:
