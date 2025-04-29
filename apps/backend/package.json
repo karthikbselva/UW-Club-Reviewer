@@ -7,8 +7,8 @@
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "eslint 'src/**/*.ts'",
-    "fix": "eslint 'src/**/*.ts' --fix'"
+    "lint": "eslint",
+    "fix": "eslint '**/**/*.ts' --fix'"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
   "dependencies": {
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "migrate": "^2.1.0",
     "mysql2": "^3.14.0",
     "nodemon": "^3.1.10",
     "reflect-metadata": "^0.2.2",
