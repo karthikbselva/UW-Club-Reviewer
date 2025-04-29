@@ -1,0 +1,12 @@
+import { ClubDTO, CreateClubDTO, UpdateClubDTO } from "../../../types";
+
+interface IClubService {
+    createClub(club: CreateClubDTO): Promise<ClubDTO>;
+    getClubById(clubId: number): Promise<ClubDTO>;
+    getClubs(): Promise<Array<ClubDTO>>;
+    // getClubsByQuery()
+    updateClub(clubId: number, club: UpdateClubDTO): Promise<ClubDTO>;
+    deleteClub(clubId: number): Promise<void>;
+}
+
+export default IClubService;
