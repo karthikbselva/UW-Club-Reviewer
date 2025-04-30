@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript'; 
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript'; 
 import { ClubCategory, ClubCategoryEnum, DayEnum, SemesterEnum } from '../../types';
+import Review from './review.model';
 
 @Table({ tableName: "clubs" })
 export default class Club extends Model {
@@ -29,4 +30,7 @@ export default class Club extends Model {
 
     @Column({ type: DataType.STRING, allowNull: false })
     banner_photo!: string;
+
+    @HasMany(() => Review)
+    reviews!: Review[]
 }
