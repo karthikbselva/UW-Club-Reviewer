@@ -2,7 +2,12 @@ import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import { ClubCategory, ClubCategoryEnum, DayEnum, SemesterEnum } from '../../types';
 import Review from './review.model';
 
-@Table({ tableName: "clubs" })
+@Table({ 
+    tableName: "clubs", 
+    timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at"
+})
 export default class Club extends Model {
     @Column({ type: DataType.STRING, allowNull: false })
     name!: string;

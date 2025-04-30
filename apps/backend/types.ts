@@ -43,7 +43,7 @@ export enum TermEnum {
    FIVE_B = "5B",
 }
 
-export type ClubDTO = {
+export interface ClubDTO {
     id: number,
     name: string,
     description: string,
@@ -68,7 +68,7 @@ export type ClubDTO = {
 export type CreateClubDTO = Omit<ClubDTO, "id" | "isActive" | "bannerPhoto">;
 export type UpdateClubDTO = Omit<ClubDTO, "id">;
 
-export type UserDTO = {
+export interface UserDTO {
     id: number,
     email: string,
     firstName: string,
@@ -81,7 +81,7 @@ export type UserDTO = {
 export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto">;
 export type UpdateUserDTO = Omit<UserDTO, "id" | "email">;
 
-export type ReviewDTO = {
+export interface ReviewDTO {
     id: number,
     userId: number,
     clubId: number,
