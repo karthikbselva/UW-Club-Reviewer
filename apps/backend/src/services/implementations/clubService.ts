@@ -2,7 +2,7 @@ import IClubService from "../interfaces/clubService";
 import {
     ClubDTO,
     CreateClubDTO,
-    // UpdateClubDTO,
+    UpdateClubDTO,
     // ClubCategory,
     // SemesterEnum,
     // DayEnum
@@ -42,10 +42,116 @@ class ClubService implements IClubService {
             bannerPhoto: newClub.banner_photo
         }
     }
-    // getClubById(clubId: number): Promise<ClubDTO> {}
-    // getClubs(): Promise<Array<ClubDTO>> {}
-    // updateClub(clubId: number, club: UpdateClubDTO): Promise<ClubDTO> {}
-    // deleteClub(clubId: number): Promise<void> {}
+    async getClubs(): Promise<ClubDTO[]> {
+        let queriedClubs : ClubModel[];
+        
+        try {
+            queriedClubs = await ClubModel.findAll();
+        } catch (error) {
+            throw error;
+        }
+
+        return queriedClubs.map((club) => ({
+            id: club.id,
+            name: club.name,
+            description: club.description,
+            competitionLevel: club.competition_level,
+            skillLevel: club.skill_level,
+            clubCategories: club.club_categories,
+            isActive: club.is_active,
+            activeTerms: club.active_terms,
+            daysOfOperation: club.days_of_operation,
+            bannerPhoto: club.banner_photo,
+        }));
+
+    }
+    async getClubById(clubId: number): Promise<ClubDTO> {
+        let club : ClubModel | null;
+
+        try {
+            club = await ClubModel.findByPk(clubId);
+        } catch (error) {
+            throw error;
+        }
+
+        if (!club) {
+            throw new Error(`Club with ID ${clubId} not found`);
+        }
+
+        return {
+            id: club.id,
+            name: club.name,
+            description: club.description,
+            competitionLevel: club.competition_level,
+            skillLevel: club.skill_level,
+            clubCategories: club.club_categories,
+            isActive: club.is_active,
+            activeTerms: club.active_terms,
+            daysOfOperation: club.days_of_operation,
+            bannerPhoto: club.banner_photo,
+        }
+        
+    }
+    async updateClub(clubId: number, club: UpdateClubDTO): Promise<ClubDTO> {
+        let existingClub: ClubModel | null
+
+        try {
+            existingClub = await ClubModel.findByPk(clubId);
+        } catch (error) {
+            throw error;
+        }
+    
+        if (!existingClub) {
+            throw new Error(`Club with ID ${clubId} not found`);
+        }
+        try {
+            await existingClub.update({
+                name: club.name ?? existingClub.name,
+                description: club.description ?? existingClub.description,
+                competitionLevel: club.competitionLevel ?? existingClub.competition_level,
+                skillLevel: club.skillLevel ?? existingClub.skill_level,
+                clubCategories: club.clubCategories ?? existingClub.club_categories,
+                isActive: club.isActive ?? existingClub.is_active,
+                activeTerms: club.activeTerms ?? existingClub.active_terms,
+                daysOfOperation: club.daysOfOperation ?? existingClub.days_of_operation,
+                bannerPhoto: club.bannerPhoto ?? existingClub.banner_photo,
+            });
+        } catch (error) {
+            throw error;
+        }
+    
+        return {
+            id: existingClub.id,
+            name: existingClub.name,
+            description: existingClub.description,
+            competitionLevel: existingClub.competition_level,
+            skillLevel: existingClub.skill_level,
+            clubCategories: existingClub.club_categories,
+            isActive: existingClub.is_active,
+            activeTerms: existingClub.active_terms,
+            daysOfOperation: existingClub.days_of_operation,
+            bannerPhoto: existingClub.banner_photo,
+        };
+    }
+    async deleteClub(clubId: number): Promise<void> {
+        let club: ClubModel | null;
+    
+        try {
+            club = await ClubModel.findByPk(clubId);
+        } catch (error) {
+            throw new Error(`Error finding club with ID ${clubId}:`);
+        }
+    
+        if (!club) {
+            throw new Error(`Club with ID ${clubId} not found`);
+        }
+    
+        try {
+            await club.destroy();
+        } catch (error) {
+            throw new Error(`Error deleting club with ID ${clubId}`);
+        }
+    }
 }
 
 export default ClubService;

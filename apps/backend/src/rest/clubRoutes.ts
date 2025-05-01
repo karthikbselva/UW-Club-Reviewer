@@ -1,7 +1,7 @@
 import { Router } from "express";
 import IClubService from "../services/interfaces/clubService";
 import ClubService from "../services/implementations/clubService";
-import { createClubDTOValidator } from "../middlewares/validators/clubValidators";
+import { createClubDTOValidator, updateClubDTOValidator } from "../middlewares/validators/clubValidators";
 import { getErrorMessage } from "../utilities/errorUtils";
 
 const clubRouter : Router = Router();
@@ -23,5 +23,49 @@ clubRouter.post("/", createClubDTOValidator, async (req, res) => {
         res.status(400).json({ error : getErrorMessage(error) });
     }
 });
+
+clubRouter.get("/", async (req, res) => {
+    try {
+        const clubs = clubService.getClubs();
+        res.status(200).send(clubs);
+
+    } catch (error) {
+        res.status(400).json({ error : getErrorMessage(error) });
+    }
+});
+
+clubRouter.get("/:id", async (req, res) => {
+    try {
+        const clubId = parseInt(req.params.id);
+        const club = clubService.getClubById(clubId);
+        res.status(200).send(club);
+    } catch (error) {
+        res.status(400).json({eror: getErrorMessage(error) })
+    }
+})
+
+clubRouter.put("/:id", updateClubDTOValidator, async (req, res) => {
+    const clubId = parseInt(req.params.id);
+
+    try {
+        const club = clubService.updateClub(clubId, req.body);
+        res.status(200).send(club);
+    } catch (error) {
+        res.status(400).json({eror: getErrorMessage(error) })
+    }
+})
+
+clubRouter.delete("/:id", async (req, res) => {
+    const clubId = parseInt(req.params.id);
+
+    try {
+        clubService.deleteClub(clubId);
+        res.status(200).send();
+    } catch (error) {
+        res.status(400).json({eror: getErrorMessage(error) })
+    }
+
+
+})
 
 export default clubRouter;
