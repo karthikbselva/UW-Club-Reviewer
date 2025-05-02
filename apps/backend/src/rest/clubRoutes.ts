@@ -1,6 +1,7 @@
 import { Router } from "express";
 import IClubService from "../services/interfaces/clubService";
 import ClubService from "../services/implementations/clubService";
+import IReviewService from "../services/interfaces/reviewService";
 import { createClubDTOValidator, updateClubDTOValidator } from "../middlewares/validators/clubValidators";
 import { getErrorMessage } from "../utilities/errorUtils";
 
