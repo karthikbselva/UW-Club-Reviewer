@@ -1,4 +1,4 @@
-const ClubCategoryValues = [
+const CategoryValues = [
     "Academic",
     "Business and Entrepreneurial",
     "Charitable, Community Service, and International Development",
@@ -11,8 +11,8 @@ const ClubCategoryValues = [
     "Political and Social Awareness",
     "Religious and Spiritual",
 ] as const;
-export const ClubCategoryEnum: ClubCategory[] = [...ClubCategoryValues];
-export type ClubCategory = typeof ClubCategoryValues[number];
+export const CategoryEnum: CategoryType[] = [...CategoryValues];
+export type CategoryType = typeof CategoryValues[number];
 
 export enum SemesterEnum {
     FALL = "Fall",
@@ -59,7 +59,7 @@ export interface ClubDTO {
         linkedin: string
     },
     */
-    clubCategories: [ClubCategory],
+    clubCategories: [CategoryType],
     isActive: boolean,
     activeTerms: [SemesterEnum],
     daysOfOperation: [DayEnum],
