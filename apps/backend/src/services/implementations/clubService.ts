@@ -1,157 +1,347 @@
 import IClubService from "../interfaces/clubService";
 import {
-    ClubDTO,
-    CreateClubDTO,
-    UpdateClubDTO,
-    // ClubCategory,
-    // SemesterEnum,
-    // DayEnum
+  CategoryDTO,
+  CategoryType,
+  ClubFullDTO,
+  ClubSearchDTO,
+  CreateClubDTO,
+  UpdateClubDTO,
+  UpdateClubResponseDTO,
 } from "../../../types";
 import ClubModel from "../../models/club.model";
-
+import ScheduleModel from "../../models/schedule.model";
+import SocialModel from "../../models/social.model";
+import CategoryModel from "../../models/category.model";
+import { sequelize } from "../../models/index";
+import { Transaction } from "sequelize";
 
 class ClubService implements IClubService {
-    async createClub(club: CreateClubDTO): Promise<ClubDTO> {
-        let newClub : ClubModel;
-        try {
-            newClub = await ClubModel.create({
-                name: club.name,
-                description: club.description,
-                competitionLevel: club.competitionLevel,
-                skillLevel: club.skillLevel,
-                clubCategories: club.clubCategories,
-                isActive: true,
-                activeTerms: club.activeTerms,
-                daysOfOperation: club.daysOfOperation,
-                bannerPhoto: "",
-            });
-        } catch (error) {
-            throw error;
-        } 
+  async createClub(clubDTO: CreateClubDTO): Promise<ClubFullDTO> {
+    let newClub: ClubModel;
+    let newSchedule: ScheduleModel;
+    let newSocial: SocialModel;
+    const categoryArray = clubDTO.categories.map((category) => ({
+      name: category,
+    }));
+    const t: Transaction = await sequelize.transaction();
 
-        return {
-            id: newClub.id,
-            name: newClub.name,
-            description: newClub.description,
-            competitionLevel: newClub.competition_level,
-            skillLevel: newClub.skill_level,
-            clubCategories: newClub.club_categories,
-            isActive: newClub.is_active,
-            activeTerms: newClub.active_terms,
-            daysOfOperation: newClub.days_of_operation,
-            bannerPhoto: newClub.banner_photo
-        }
+    try {
+      newClub = await ClubModel.create(
+        {
+          name: clubDTO.name,
+          description: clubDTO.description,
+          competitionLevel: clubDTO.competitionLevel,
+          skillLevel: clubDTO.skillLevel,
+          isActive: true,
+          bannerPhoto: "",
+          categories: categoryArray,
+        },
+        {
+          include: CategoryModel,
+          transaction: t,
+        },
+      );
+
+      newSchedule = await ScheduleModel.create(
+        {
+          club_id: newClub.id,
+          sunday: clubDTO.schedule.sunday,
+          monday: clubDTO.schedule.monday,
+          tuesday: clubDTO.schedule.tuesday,
+          wednesday: clubDTO.schedule.wednesday,
+          thursday: clubDTO.schedule.thursday,
+          friday: clubDTO.schedule.friday,
+          saturday: clubDTO.schedule.saturday,
+        },
+        { transaction: t },
+      );
+
+      newSocial = await SocialModel.create(
+        {
+          club_id: newClub.id,
+          email: clubDTO.social.email,
+          instagram: clubDTO.social.instagram,
+          tiktok: clubDTO.social.tiktok,
+          youtube: clubDTO.social.youtube,
+          facebook: clubDTO.social.facebook,
+          linkedin: clubDTO.social.linkedin,
+        },
+        { transaction: t },
+      );
+
+      await t.commit();
+    } catch (error) {
+      await t.rollback();
+      throw error;
     }
-    async getClubs(): Promise<ClubDTO[]> {
-        let queriedClubs : ClubModel[];
-        
-        try {
-            queriedClubs = await ClubModel.findAll();
-        } catch (error) {
-            throw error;
-        }
 
-        return queriedClubs.map((club) => ({
-            id: club.id,
-            name: club.name,
-            description: club.description,
-            competitionLevel: club.competition_level,
-            skillLevel: club.skill_level,
-            clubCategories: club.club_categories,
-            isActive: club.is_active,
-            activeTerms: club.active_terms,
-            daysOfOperation: club.days_of_operation,
-            bannerPhoto: club.banner_photo,
-        }));
+    const categoriesObject = (await newClub.$get("categories")).map(
+      (category) => ({
+        id: category.id,
+        name: category.name as CategoryType,
+      }),
+    );
+    const reviewsObject = (await newClub.$get("reviews")).map((review) => ({
+      id: review.id,
+      userId: review.user_id,
+      clubId: review.club_id,
+      comment: review.comment,
+      isLiked: review.is_liked,
+      helpfulVotes: review.helpful_votes,
+    }));
 
+    return {
+      id: newClub.id,
+      name: newClub.name,
+      description: newClub.description,
+      competitionLevel: newClub.competition_level,
+      skillLevel: newClub.skill_level,
+      isActive: newClub.is_active,
+      bannerPhoto: newClub.banner_photo,
+      schedule: {
+        id: newSchedule.id,
+        clubId: newSchedule.club_id,
+        sunday: newSchedule.sunday,
+        monday: newSchedule.monday,
+        tuesday: newSchedule.sunday,
+        wednesday: newSchedule.sunday,
+        thursday: newSchedule.sunday,
+        friday: newSchedule.sunday,
+        saturday: newSchedule.sunday,
+      },
+      social: {
+        id: newSocial.id,
+        clubId: newSocial.club_id,
+        email: newSocial.email,
+        instagram: newSocial.instagram,
+        tiktok: newSocial.tiktok,
+        youtube: newSocial.youtube,
+        facebook: newSocial.facebook,
+        linkedin: newSocial.linkedin,
+      },
+      categories: categoriesObject,
+      reviews: reviewsObject,
+    };
+  }
+
+  async getClubs(): Promise<ClubSearchDTO[]> {
+    const queriedClubs = await ClubModel.findAll({
+      include: ["schedule"],
+    });
+    const clubDTOs = queriedClubs.map((club) => ({
+      id: club.id,
+      name: club.name,
+      description: club.description,
+      competitionLevel: club.competition_level,
+      skillLevel: club.skill_level,
+      isActive: club.is_active,
+      bannerPhoto: club.banner_photo,
+      schedule: {
+        id: club.schedule.id,
+        clubId: club.schedule.club_id,
+        sunday: club.schedule.sunday,
+        monday: club.schedule.monday,
+        tuesday: club.schedule.tuesday,
+        wednesday: club.schedule.wednesday,
+        thursday: club.schedule.thursday,
+        friday: club.schedule.friday,
+        saturday: club.schedule.saturday,
+      },
+    }));
+
+    return clubDTOs;
+  }
+
+  async getClubById(clubId: number): Promise<ClubFullDTO> {
+    const club = await ClubModel.findByPk(clubId, {
+      include: ["schedule", "social", "categories", "reviews"],
+    });
+
+    if (!club) {
+      throw new Error(`Club with ID ${clubId} not found`);
     }
-    async getClubById(clubId: number): Promise<ClubDTO> {
-        let club : ClubModel | null;
 
-        try {
-            club = await ClubModel.findByPk(clubId);
-        } catch (error) {
-            throw error;
-        }
+    const categoriesObject = club.categories.map((category) => ({
+      id: category.id,
+      name: category.name as CategoryType,
+    }));
+    const reviewsObject = club.reviews.map((review) => ({
+      id: review.id,
+      userId: review.user_id,
+      clubId: review.club_id,
+      comment: review.comment,
+      isLiked: review.is_liked,
+      helpfulVotes: review.helpful_votes,
+    }));
 
-        if (!club) {
-            throw new Error(`Club with ID ${clubId} not found`);
-        }
+    return {
+      id: club.id,
+      name: club.name,
+      description: club.description,
+      competitionLevel: club.competition_level,
+      skillLevel: club.skill_level,
+      isActive: club.is_active,
+      bannerPhoto: club.banner_photo,
+      schedule: {
+        id: club.schedule.id,
+        clubId: club.schedule.club_id,
+        sunday: club.schedule.sunday,
+        monday: club.schedule.monday,
+        tuesday: club.schedule.tuesday,
+        wednesday: club.schedule.wednesday,
+        thursday: club.schedule.thursday,
+        friday: club.schedule.friday,
+        saturday: club.schedule.saturday,
+      },
+      social: {
+        id: club.social.id,
+        clubId: club.social.club_id,
+        email: club.social.email,
+        instagram: club.social.instagram,
+        tiktok: club.social.tiktok,
+        youtube: club.social.youtube,
+        facebook: club.social.facebook,
+        linkedin: club.social.linkedin,
+      },
+      categories: categoriesObject,
+      reviews: reviewsObject,
+    };
+  }
 
-        return {
-            id: club.id,
-            name: club.name,
-            description: club.description,
-            competitionLevel: club.competition_level,
-            skillLevel: club.skill_level,
-            clubCategories: club.club_categories,
-            isActive: club.is_active,
-            activeTerms: club.active_terms,
-            daysOfOperation: club.days_of_operation,
-            bannerPhoto: club.banner_photo,
-        }
-        
+  async updateClub(
+    clubId: number,
+    clubDTO: UpdateClubDTO,
+  ): Promise<UpdateClubResponseDTO> {
+    const t: Transaction = await sequelize.transaction();
+
+    const club = await ClubModel.findByPk(clubId);
+    if (!club) throw new Error(`Club with ID ${clubId} not found`);
+
+    const schedule = await club.$get("schedule");
+    if (!schedule)
+      throw new Error(
+        `Associated schedule for club with ID ${clubId} not found`,
+      );
+
+    const social = await club.$get("social");
+    if (!social)
+      throw new Error(
+        `Associated socials for club with ID ${clubId} not found`,
+      );
+
+    await club.update(
+      {
+        name: clubDTO.name,
+        description: clubDTO.description,
+        competitionLevel: clubDTO.competitionLevel,
+        skillLevel: clubDTO.skillLevel,
+        categories: clubDTO.categories,
+        isActive: clubDTO.isActive,
+        bannerPhoto: clubDTO.bannerPhoto,
+      },
+      { transaction: t },
+    );
+
+    if (clubDTO.schedule) {
+      await schedule.update(
+        {
+          sunday: clubDTO.schedule.sunday,
+          monday: clubDTO.schedule.monday,
+          tuesday: clubDTO.schedule.tuesday,
+          wednesday: clubDTO.schedule.wednesday,
+          thursday: clubDTO.schedule.thursday,
+          friday: clubDTO.schedule.friday,
+          saturday: clubDTO.schedule.saturday,
+        },
+        { transaction: t },
+      );
     }
-    async updateClub(clubId: number, club: UpdateClubDTO): Promise<ClubDTO> {
-        let existingClub: ClubModel | null
 
-        try {
-            existingClub = await ClubModel.findByPk(clubId);
-        } catch (error) {
-            throw error;
-        }
-    
-        if (!existingClub) {
-            throw new Error(`Club with ID ${clubId} not found`);
-        }
-        try {
-            await existingClub.update({
-                name: club.name ?? existingClub.name,
-                description: club.description ?? existingClub.description,
-                competitionLevel: club.competitionLevel ?? existingClub.competition_level,
-                skillLevel: club.skillLevel ?? existingClub.skill_level,
-                clubCategories: club.clubCategories ?? existingClub.club_categories,
-                isActive: club.isActive ?? existingClub.is_active,
-                activeTerms: club.activeTerms ?? existingClub.active_terms,
-                daysOfOperation: club.daysOfOperation ?? existingClub.days_of_operation,
-                bannerPhoto: club.bannerPhoto ?? existingClub.banner_photo,
-            });
-        } catch (error) {
-            throw error;
-        }
-    
-        return {
-            id: existingClub.id,
-            name: existingClub.name,
-            description: existingClub.description,
-            competitionLevel: existingClub.competition_level,
-            skillLevel: existingClub.skill_level,
-            clubCategories: existingClub.club_categories,
-            isActive: existingClub.is_active,
-            activeTerms: existingClub.active_terms,
-            daysOfOperation: existingClub.days_of_operation,
-            bannerPhoto: existingClub.banner_photo,
-        };
+    if (clubDTO.social) {
+      await social.update(
+        {
+          email: clubDTO.social.email,
+          instagram: clubDTO.social.instagram,
+          tiktok: clubDTO.social.tiktok,
+          youtube: clubDTO.social.youtube,
+          facebook: clubDTO.social.facebook,
+          linkedin: clubDTO.social.linkedin,
+        },
+        { transaction: t },
+      );
     }
-    async deleteClub(clubId: number): Promise<void> {
-        let club: ClubModel | null;
-    
-        try {
-            club = await ClubModel.findByPk(clubId);
-        } catch (error) {
-            throw new Error(`Error finding club with ID ${clubId}:`);
-        }
-    
-        if (!club) {
-            throw new Error(`Club with ID ${clubId} not found`);
-        }
-    
-        try {
-            await club.destroy();
-        } catch (error) {
-            throw new Error(`Error deleting club with ID ${clubId}`);
-        }
+
+    let categoriesObject: CategoryDTO[] = []; // declare for safe return
+    if (clubDTO.categories) {
+      const categoryModelsArray = await Promise.all(
+        clubDTO.categories.map((category) =>
+          CategoryModel.findOrCreate({
+            where: { name: category },
+            transaction: t,
+          }).then(([categoryModel]) => {
+            return categoryModel;
+          }),
+        ),
+      );
+      await club.$add("categories", categoryModelsArray);
+      categoriesObject = (await club.$get("categories")).map((category) => ({
+        id: category.id,
+        name: category.name as CategoryType,
+      }));
     }
+
+    return {
+      id: club.id,
+      name: club.name,
+      description: club.description,
+      competitionLevel: club.competition_level,
+      skillLevel: club.skill_level,
+      isActive: club.is_active,
+      bannerPhoto: club.banner_photo,
+      schedule: {
+        id: schedule.id,
+        clubId: schedule.club_id,
+        sunday: schedule.sunday,
+        monday: schedule.monday,
+        tuesday: schedule.tuesday,
+        wednesday: schedule.wednesday,
+        thursday: schedule.thursday,
+        friday: schedule.friday,
+        saturday: schedule.saturday,
+      },
+      social: {
+        id: social.id,
+        clubId: social.club_id,
+        email: social.email,
+        instagram: social.instagram,
+        tiktok: social.tiktok,
+        youtube: social.youtube,
+        facebook: social.facebook,
+        linkedin: social.linkedin,
+      },
+      categories: categoriesObject,
+    };
+  }
+
+  async deleteClub(clubId: number): Promise<void> {
+    let club: ClubModel | null;
+
+    try {
+      club = await ClubModel.findByPk(clubId);
+    } catch {
+      throw new Error(`Error finding club with ID ${clubId}:`);
+    }
+
+    if (!club) {
+      throw new Error(`Club with ID ${clubId} not found`);
+    }
+
+    try {
+      await club.destroy();
+    } catch {
+      throw new Error(`Error deleting club with ID ${clubId}`);
+    }
+  }
 }
 
 export default ClubService;
