@@ -127,3 +127,11 @@ export type UpdateReviewDTO = Omit<
   ReviewDTO,
   "id" | "userId" | "clubId" | "helpfulVotes"
 >;
+
+export interface VoteDTO {
+  id: number,
+  userId: number,
+  reviewId: number,
+  vote_value: number,
+}
+export type AddVoteDTO = Omit<VoteDTO, "id">

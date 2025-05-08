@@ -12,9 +12,8 @@ import Review from "../models/review.model";
 
 @Table({
   tableName: "votes",
-  timestamps: true,
   createdAt: "created_at",
-  updatedAt: "updated_at",
+  updatedAt: false,
 })
 export default class Vote extends Model {
   @Index({ name: "user_review_id", unique: true })
