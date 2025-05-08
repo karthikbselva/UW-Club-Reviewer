@@ -1,30 +1,39 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript'; 
-import User from './user.model';
-import Club from './club.model';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+  Index,
+} from "sequelize-typescript";
+import User from "./user.model";
+import Club from "./club.model";
 
 @Table({ tableName: "reviews" })
 export default class Review extends Model {
-    @ForeignKey(() => User)
-    @Column({ type: DataType.NUMBER, allowNull: false })
-    user_id!: number;
-    
-    @BelongsTo(() => User)
-    user!: User
+  @Index({ name: "user_club_id", unique: true })
+  @ForeignKey(() => User)
+  @Column({ type: DataType.NUMBER, allowNull: false })
+  user_id!: number;
 
-    @ForeignKey(() => Club)
-    @Column({ type: DataType.NUMBER, allowNull: false })
-    club_id!: number;
-    
-    @BelongsTo(() => Club)
-    club!: Club;
+  @BelongsTo(() => User)
+  user!: User;
 
-    @Column({ type: DataType.STRING, allowNull: false })
-    comment!: string;
+  @Index({ name: "user_club_id", unique: true })
+  @ForeignKey(() => Club)
+  @Column({ type: DataType.NUMBER, allowNull: false })
+  club_id!: number;
 
-    @Column({ type: DataType.BOOLEAN, allowNull: false })
-    is_liked!: boolean;
+  @BelongsTo(() => Club)
+  club!: Club;
 
-    @Column({ type: DataType.NUMBER, allowNull: false })
-    helpful_votes!: number;
+  @Column({ type: DataType.STRING, allowNull: false })
+  comment!: string;
 
+  @Column({ type: DataType.BOOLEAN, allowNull: false })
+  is_liked!: boolean;
+
+  @Column({ type: DataType.NUMBER, allowNull: false })
+  helpful_votes!: number;
 }

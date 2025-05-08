@@ -16,7 +16,7 @@ import Club from "./club.model";
 })
 export default class Social extends Model {
   @ForeignKey(() => Club)
-  @Column({ type: DataType.INTEGER, allowNull: false })
+  @Column({ type: DataType.INTEGER, unique: true, allowNull: false })
   club_id!: number;
 
   @BelongsTo(() => Club)

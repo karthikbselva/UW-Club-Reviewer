@@ -20,7 +20,7 @@ import Social from "./social.model";
   updatedAt: "updated_at",
 })
 export default class Club extends Model {
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.STRING, unique: true, allowNull: false })
   name!: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
