@@ -4,7 +4,7 @@ import Review from "./review.model";
 
 @Table({ tableName: "users" })
 export default class User extends Model {
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.STRING, unique: true, allowNull: false })
   email!: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
@@ -13,14 +13,14 @@ export default class User extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
   last_name!: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  program_name!: string;
+  @Column({ type: DataType.STRING, allowNull: true })
+  program_name!: string | null;
 
-  @Column({ type: DataType.ENUM(...Object.values(TermEnum)), allowNull: false })
-  term_of_study!: TermEnum;
+  @Column({ type: DataType.ENUM(...Object.values(TermEnum)), allowNull: true })
+  term_of_study!: TermEnum | null;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  profile_photo?: string;
+  @Column({ type: DataType.STRING, allowNull: true })
+  profile_photo!: string | null;
 
   @HasMany(() => Review)
   reviews!: Review[];

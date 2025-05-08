@@ -23,20 +23,20 @@ export default class Social extends Model {
   club!: Club;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  email!: string;
+  email!: string | null;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  instagram!: string;
+  instagram!: string | null;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  tiktok!: string;
+  tiktok!: string | null;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  linkedin!: string;
+  linkedin!: string | null;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  facebook!: string;
+  facebook!: string | null;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  youtube!: string;
+  youtube!: string | null;
 }
