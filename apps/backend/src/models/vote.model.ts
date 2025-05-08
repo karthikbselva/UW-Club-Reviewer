@@ -1,0 +1,38 @@
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  BelongsTo,
+  ForeignKey,
+  Index,
+} from "sequelize-typescript";
+import User from "../models/user.model";
+import Review from "../models/review.model";
+
+@Table({
+  tableName: "votes",
+  timestamps: true,
+  createdAt: "created_at",
+  updatedAt: "updated_at",
+})
+export default class Vote extends Model {
+  @Index({ name: "user_review_id", unique: true })
+  @ForeignKey(() => User)
+  @Column({ type: DataType.NUMBER, allowNull: false })
+  user_id!: number;
+
+  @BelongsTo(() => User)
+  user!: User;
+
+  @Index({ name: "user_review_id", unique: true })
+  @ForeignKey(() => Review)
+  @Column({ type: DataType.NUMBER, allowNull: false })
+  review_id!: number;
+
+  @BelongsTo(() => Review)
+  review!: Review;
+
+  @Column({ type: DataType.NUMBER, allowNull: false })
+  vote_value!: number;
+}

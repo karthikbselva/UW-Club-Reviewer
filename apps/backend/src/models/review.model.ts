@@ -6,9 +6,11 @@ import {
   ForeignKey,
   BelongsTo,
   Index,
+  HasMany,
 } from "sequelize-typescript";
 import User from "./user.model";
 import Club from "./club.model";
+import Vote from "./vote.model";
 
 @Table({ tableName: "reviews" })
 export default class Review extends Model {
@@ -36,4 +38,7 @@ export default class Review extends Model {
 
   @Column({ type: DataType.NUMBER, allowNull: false })
   helpful_votes!: number;
+
+  @HasMany(() => Vote)
+  votes!: Vote[];
 }

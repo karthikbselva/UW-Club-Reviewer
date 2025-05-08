@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, HasMany } from "sequelize-typescript";
 import { TermEnum } from "../../types";
 import Review from "./review.model";
+import Vote from "./vote.model";
 
 @Table({ tableName: "users" })
 export default class User extends Model {
@@ -24,4 +25,7 @@ export default class User extends Model {
 
   @HasMany(() => Review)
   reviews!: Review[];
+
+  @HasMany(() => Vote)
+  votes!: Vote[];
 }
