@@ -231,13 +231,13 @@ class ClubService implements IClubService {
 
     await club.update(
       {
-        name: clubDTO.name,
-        description: clubDTO.description,
-        competitionLevel: clubDTO.competitionLevel,
-        skillLevel: clubDTO.skillLevel,
-        categories: clubDTO.categories,
-        isActive: clubDTO.isActive,
-        bannerPhoto: clubDTO.bannerPhoto,
+        name: clubDTO.name ?? club.name,
+        description: clubDTO.description ?? club.description,
+        competitionLevel: clubDTO.competitionLevel ?? club.competition_level,
+        skillLevel: clubDTO.skillLevel ?? club.skill_level,
+        categories: clubDTO.categories ?? club.categories,
+        isActive: clubDTO.isActive ?? club.is_active,
+        bannerPhoto: clubDTO.bannerPhoto ?? club.banner_photo,
       },
       { transaction: t },
     );
