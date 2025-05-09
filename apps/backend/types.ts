@@ -110,7 +110,10 @@ export interface UserDTO {
   profilePhoto: string;
 }
 
-export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto">;
+export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto"> & {
+    passwordHash: string,
+};
+
 export type UpdateUserDTO = Omit<UserDTO, "id" | "email">;
 
 export interface ReviewDTO {
@@ -133,6 +136,6 @@ export interface VoteDTO {
   id: number,
   userId: number,
   reviewId: number,
-  vote_value: number,
+  voteValue: number,
 }
 export type AddVoteDTO = Omit<VoteDTO, "id">
