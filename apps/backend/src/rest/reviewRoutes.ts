@@ -12,7 +12,7 @@ reviewRouter.post("/", async (req, res) => {
             userId: req.body.user_id,
             clubId: req.body.club_id,
             comment: req.body.comment,
-            isLiked: req.body.is_liked,
+            likesClub: req.body.likes_club,
         });
         res.status(200).send(newReview);
     } catch (error) {
@@ -35,8 +35,8 @@ reviewRouter.put("/:id", async (req, res) => {
     try {
         const updatedReview = reviewService.updateReview(reviewId, {
             comment: req.body.comment ?? null,
-            isLiked: req.body.is_liked ?? null,
-            helpfulVotes: req.body.helpful_votes ?? null,
+            likesClub: req.body.likes_club ?? null,
+            voteSum: req.body.vote_sum ?? null,
         });
         res.status(200).send(updatedReview);
     } catch (error) {

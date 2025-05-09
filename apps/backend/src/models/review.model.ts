@@ -7,6 +7,7 @@ import {
   BelongsTo,
   Index,
   HasMany,
+  Default,
 } from "sequelize-typescript";
 import User from "./user.model";
 import Club from "./club.model";
@@ -34,10 +35,11 @@ export default class Review extends Model {
   comment!: string;
 
   @Column({ type: DataType.BOOLEAN, allowNull: false })
-  is_liked!: boolean;
+  likes_club!: boolean;
 
+  @Default(0)
   @Column({ type: DataType.NUMBER, allowNull: false })
-  helpful_votes!: number;
+  vote_sum!: number;
 
   @HasMany(() => Vote)
   votes!: Vote[];

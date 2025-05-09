@@ -86,8 +86,8 @@ class ClubService implements IClubService {
       userId: review.user_id,
       clubId: review.club_id,
       comment: review.comment,
-      isLiked: review.is_liked,
-      helpfulVotes: review.helpful_votes,
+      likesClub: review.likes_club,
+      voteSum: review.vote_sum,
     }));
 
     return {
@@ -170,8 +170,8 @@ class ClubService implements IClubService {
       userId: review.user_id,
       clubId: review.club_id,
       comment: review.comment,
-      isLiked: review.is_liked,
-      helpfulVotes: review.helpful_votes,
+      likesClub: review.likes_club,
+      voteSum: review.vote_sum,
     }));
 
     return {

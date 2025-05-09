@@ -8,7 +8,7 @@ class reviewService implements IReviewService {
       user_id: reviewDTO.userId,
       club_id: reviewDTO.clubId,
       comment: reviewDTO.comment,
-      is_liked: reviewDTO.isLiked,
+      likes_club: reviewDTO.likesClub,
     });
 
     return {
@@ -16,8 +16,8 @@ class reviewService implements IReviewService {
       userId: newReview.user_id,
       clubId: newReview.club_id,
       comment: newReview.comment,
-      isLiked: newReview.is_liked,
-      helpfulVotes: newReview.helpful_votes,
+      likesClub: newReview.likes_club,
+      voteSum: newReview.vote_sum,
     };
   }
   async getReviewsByClubId(clubId: number): Promise<ReviewDTO[]> {
@@ -32,11 +32,11 @@ class reviewService implements IReviewService {
       userId: review.user_id,
       clubId: review.club_id,
       comment: review.comment,
-      isLiked: review.is_liked,
-      helpfulVotes: review.helpful_votes,
+      likesClub: review.likes_club,
+      voteSum: review.vote_sum,
     }));
   }
-  //getReviews(sortingField: "helpfulVotes" | "createdAt") : Promise<ReviewDTO[]> {
+  //getReviews(sortingField: "voteSum" | "createdAt") : Promise<ReviewDTO[]> {
 
   //}
   async updateReview(
@@ -51,8 +51,8 @@ class reviewService implements IReviewService {
 
     await existingReview.update({
       comment: reviewDTO.comment ?? existingReview.comment,
-      is_liked: reviewDTO.isLiked ?? existingReview.is_liked,
-      helpful_votes: reviewDTO.helpfulVotes ?? existingReview.helpful_votes,
+      likes_club: reviewDTO.likesClub ?? existingReview.likes_club,
+      vote_sum: reviewDTO.voteSum ?? existingReview.vote_sum,
     });
 
     return {
@@ -60,8 +60,8 @@ class reviewService implements IReviewService {
       userId: existingReview.user_id,
       clubId: existingReview.club_id,
       comment: existingReview.comment,
-      isLiked: existingReview.is_liked,
-      helpfulVotes: existingReview.helpful_votes,
+      likesClub: existingReview.likes_club,
+      voteSum: existingReview.vote_sum,
     };
   }
 

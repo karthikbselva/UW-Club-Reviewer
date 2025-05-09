@@ -118,15 +118,15 @@ export interface ReviewDTO {
   userId: number;
   clubId: number;
   comment: string;
-  isLiked: boolean;
-  helpfulVotes: number;
+  likesClub: boolean;
+  voteSum: number;
 }
 
-export type CreateReviewDTO = Omit<ReviewDTO, "id" | "helpfulVotes">;
+export type CreateReviewDTO = Omit<ReviewDTO, "id" | "voteSum">;
 export interface UpdateReviewDTO {
   comment: string | null;
-  isLiked: boolean | null;
-  helpfulVotes: number | null;
+  likesClub: boolean | null;
+  voteSum: number | null;
 }
 
 export interface VoteDTO {
