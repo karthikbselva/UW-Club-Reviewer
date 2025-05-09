@@ -12,7 +12,7 @@ reviewRouter.post("/", async (req, res) => {
             userId: req.body.user_id,
             clubId: req.body.club_id,
             comment: req.body.comment,
-            isLiked: req.body.isLiked,
+            isLiked: req.body.is_liked,
         });
         res.status(200).send(newReview);
     } catch (error) {
@@ -22,7 +22,7 @@ reviewRouter.post("/", async (req, res) => {
 
 reviewRouter.get("/:club_id", async (req, res) => {
     try {
-        const reviews = reviewService.getReviewByClubId(req.body.club_id);
+        const reviews = reviewService.getReviewsByClubId(req.body.club_id);
         res.status(200).send(reviews);
 
     } catch (error) {
@@ -33,7 +33,11 @@ reviewRouter.get("/:club_id", async (req, res) => {
 reviewRouter.put("/:id", async (req, res) => {
     const reviewId = parseInt(req.params.id);
     try {
-        const updatedReview = reviewService.updateReview(reviewId, req.body);
+        const updatedReview = reviewService.updateReview(reviewId, {
+            comment: req.body.comment ?? null,
+            isLiked: req.body.is_liked ?? null,
+            helpfulVotes: req.body.helpful_votes ?? null,
+        });
         res.status(200).send(updatedReview);
     } catch (error) {
         res.status(400).json({ error : getErrorMessage(error) });

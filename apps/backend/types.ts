@@ -123,10 +123,11 @@ export interface ReviewDTO {
 }
 
 export type CreateReviewDTO = Omit<ReviewDTO, "id" | "helpfulVotes">;
-export type UpdateReviewDTO = Omit<
-  ReviewDTO,
-  "id" | "userId" | "clubId" | "helpfulVotes"
->;
+export interface UpdateReviewDTO {
+  comment: string | null;
+  isLiked: boolean | null;
+  helpfulVotes: number | null;
+}
 
 export interface VoteDTO {
   id: number,
