@@ -3,18 +3,19 @@ import IUserService from "../interfaces/userService";
 import UserModel from "../../models/user.model";
 import { genSaltSync, hashSync } from "bcrypt-ts";
 import Password from "../../models/password.model";
+import { CreatePasswordDTO } from "../../../types";
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const salt = genSaltSync(10);
 
 class UserService implements IUserService {
-    async createUser(user: CreateUserDTO): Promise<UserDTO> {
+    async createUser(user: CreateUserDTO, password: CreatePasswordDTO): Promise<UserDTO> {
         let newUser : UserModel;
         let newPassword: Password;
         try {
-            const hashedPassword = hashSync(user.password.password_hash, salt);
+            const hashedPassword = hashSync(password.unhashed_password, salt);
             newPassword = await Password.create({
-                user_id: user.password.user_id,
+                user_id: password.user_id,
                 password_hash: hashedPassword,
             })
             newUser = await UserModel.create({
@@ -37,7 +38,6 @@ class UserService implements IUserService {
             programName: newUser.program_name,
             termOfStudy: newUser.term_of_study,
             profilePhoto: newUser.profile_photo,
-            password: newPassword,
         }
     }
     async getUserById(userId: number): Promise<UserDTO> {
@@ -61,7 +61,7 @@ class UserService implements IUserService {
                 lastName: existingUser.last_name,
                 programName: existingUser.program_name,
                 termOfStudy: existingUser.term_of_study,
-                profilePhoto: // Add default profile picture here
+                profilePhoto: "Default Profile Pic Here"
             }
         }
 

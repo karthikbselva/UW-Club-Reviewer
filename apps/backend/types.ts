@@ -110,7 +110,6 @@ export interface UserDTO {
   programName: string | null;
   termOfStudy: TermEnum | null;
   profilePhoto: string | null;
-  password: Password,
 }
 
 export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto">;
@@ -140,3 +139,8 @@ export interface VoteDTO {
   voteValue: number,
 }
 export type AddVoteDTO = Omit<VoteDTO, "id">
+
+export interface CreatePasswordDTO {
+  user_id: number,
+  unhashed_password: string,
+}
