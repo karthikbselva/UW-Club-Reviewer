@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "bcrypt-ts": "^7.0.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "migrate": "^2.1.0",

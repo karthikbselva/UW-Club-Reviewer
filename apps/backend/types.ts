@@ -1,3 +1,5 @@
+import Password from "./src/models/password.model";
+
 const CategoryValues = [
   "Academic",
   "Business and Entrepreneurial",
@@ -105,14 +107,13 @@ export interface UserDTO {
   email: string;
   firstName: string;
   lastName: string;
-  programName: string;
-  termOfStudy: TermEnum;
-  profilePhoto: string;
+  programName: string | null;
+  termOfStudy: TermEnum | null;
+  profilePhoto: string | null;
+  password: Password,
 }
 
-export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto"> & {
-    passwordHash: string,
-};
+export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto">;
 
 export type UpdateUserDTO = Omit<UserDTO, "id" | "email">;
 

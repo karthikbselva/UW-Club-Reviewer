@@ -1,7 +1,8 @@
-import { Table, Column, Model, DataType, HasMany } from "sequelize-typescript";
+import { Table, Column, Model, DataType, HasMany, HasOne } from "sequelize-typescript";
 import { TermEnum } from "../../types";
 import Review from "./review.model";
 import Vote from "./vote.model";
+import Password from "./password.model";
 
 @Table({ tableName: "users" })
 export default class User extends Model {
@@ -22,6 +23,9 @@ export default class User extends Model {
 
   @Column({ type: DataType.STRING, allowNull: true })
   profile_photo!: string | null;
+
+  @HasOne(() => Password)
+  encrypted_password!: Password;
 
   @HasMany(() => Review)
   reviews!: Review[];
