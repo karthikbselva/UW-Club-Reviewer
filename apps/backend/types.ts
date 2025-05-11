@@ -143,3 +143,9 @@ export interface VoteDTO {
   voteValue: number,
 }
 export type AddVoteDTO = Omit<VoteDTO, "id">
+
+export interface TokenDTO {
+  accessToken: string,
+  refreshToken: string,
+  expiresIn: number,
+}
