@@ -3,7 +3,9 @@ import IAuthService from "../interfaces/authService";
 const jwt = require('jsonwebtoken');
 import UserModel from "../../models/user.model";
 import Password from "../../models/password.model";
+import bcrypt from "bcrypt-ts";
 import { lstat } from "fs";
+
 require('dotenv').config()
 
 class AuthService implements IAuthService {
@@ -64,8 +66,15 @@ class AuthService implements IAuthService {
             throw new Error ("User does not have password stored");
         }
 
-        if (password != userPassword.password_hash) {
-            throw new Error("Incorrect Password");
+        let isMatch;
+        try {
+            isMatch = await bcrypt.compare(password, userPassword.password_hash);
+        } catch (error) {
+            throw error;
+        }
+
+        if(!isMatch) {
+            throw new Error("Password did not match");
         }
 
         return {
