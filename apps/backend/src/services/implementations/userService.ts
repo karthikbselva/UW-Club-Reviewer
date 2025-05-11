@@ -3,27 +3,31 @@ import IUserService from "../interfaces/userService";
 import UserModel from "../../models/user.model";
 import { genSaltSync, hashSync } from "bcrypt-ts";
 import Password from "../../models/password.model";
-import { CreatePasswordDTO } from "../../../types";
 const salt = genSaltSync(10);
 
 class UserService implements IUserService {
-    async createUser(user: CreateUserDTO, password: CreatePasswordDTO): Promise<UserDTO> {
+    async createUser(user: CreateUserDTO): Promise<UserDTO> {
         let newUser: UserModel;
-        let newPassword: Password;
         try {
-            const hashedPassword = hashSync(password.unhashed_password, salt);
-            newPassword = await Password.create({
-                user_id: password.user_id,
-                password_hash: hashedPassword,
-            })
+            const hashedPassword = hashSync(user.newPassword.password_hash, salt);
             newUser = await UserModel.create({
                 email: user.email,
                 first_name: user.firstName,
                 last_name: user.lastName,
                 program_name: user.programName,
                 term_of_study: user.termOfStudy,
-                encrypted_password: newPassword,
-            })
+                password_hash: {
+                    user_id: user.newPassword.user_id,
+                    password_hash: hashedPassword,
+                }
+            },
+                {
+                    include: [{
+                        association: UserModel.associations.password_hash,
+                    }],
+                }
+
+            )
         } catch (error) {
             throw error;
         }
@@ -109,7 +113,7 @@ class UserService implements IUserService {
                     term_of_study: user.termOfStudy ?? existingUser.term_of_study,
                     program_name: user.programName ?? existingUser.program_name,
                     profile_picture: user.profilePhoto ?? existingUser.profile_photo,
-                    encrypted_password: existingPassword ?? existingUser.encrypted_password,
+                    password_hash: existingPassword ?? existingUser.password_hash,
                 }
             )
         } catch (error) {

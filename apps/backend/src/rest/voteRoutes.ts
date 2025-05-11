@@ -14,13 +14,13 @@ const reviewService : IReviewService = new ReviewService();
 
 voteRouter.post("/votes", async (req, res) => {
     try {
-        const newVote = voteService.addVote({
+        const newVote = await voteService.addVote({
             userId: req.body.user_id,
             reviewId: req.body.review_id,
             voteValue: req.body.vote_value,
         })
         res.status(200).send(newVote);
-        const existingReview = reviewService.updateReview(req.body.review_id, {
+        const existingReview = await reviewService.updateReview(req.body.review_id, {
             comment: null,
             likesClub: null,
             voteSum: await voteService.getVoteSum(req.body.review_id),
@@ -37,7 +37,7 @@ voteRouter.delete("/votes/:userId/:reviewId", async (req, res) => {
     const reviewId = parseInt(req.params.reviewId);
 
     try {
-        voteService.removeVote(userId, reviewId);
+        await voteService.removeVote(userId, reviewId);
         res.status(200).send();
     } catch (error) {
         res.status(400).json({ error : getErrorMessage(error) });

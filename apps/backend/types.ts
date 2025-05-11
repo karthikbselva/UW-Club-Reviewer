@@ -112,7 +112,9 @@ export interface UserDTO {
   profilePhoto: string | null;
 }
 
-export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto">;
+export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto"> & {
+  newPassword: Password;
+};
 
 export type UpdateUserDTO = Omit<UserDTO, "id" | "email"> & {
     updatedPassword: Password;
@@ -141,8 +143,3 @@ export interface VoteDTO {
   voteValue: number,
 }
 export type AddVoteDTO = Omit<VoteDTO, "id">
-
-export interface CreatePasswordDTO {
-  user_id: number,
-  unhashed_password: string,
-}
