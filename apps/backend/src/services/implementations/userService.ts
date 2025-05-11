@@ -4,8 +4,6 @@ import UserModel from "../../models/user.model";
 import { genSaltSync, hashSync } from "bcrypt-ts";
 import Password from "../../models/password.model";
 import { CreatePasswordDTO } from "../../../types";
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
 const salt = genSaltSync(10);
 
 class UserService implements IUserService {
@@ -78,6 +76,56 @@ class UserService implements IUserService {
 
     async updateUser(userId: number, user: UpdateUserDTO): Promise<UserDTO> {
         let existingUser : UserModel | null;
+        let existingPassword : Password | null;
+        try {
+            existingPassword = await Password.findOne({where: {userId: userId}})
+            existingUser = await UserModel.findByPk(userId);
+        } catch (error) {
+            throw error;
+        }
+
+        if(!existingUser) {
+             throw new Error("User not found");
+        }
+
+        if(!existingPassword) {
+            throw new Error("No Password found")
+        }
+
+        try {
+            if(existingPassword) {
+                const updatedHashedPassword = hashSync(user.updatedPassword.password_hash, salt);
+                await existingPassword.update({
+                password_hash: updatedHashedPassword,
+            })
+            } else {
+                existingPassword = null;
+            }
+
+            await existingUser.update(
+                {
+                    first_name: user.firstName ?? existingUser.first_name,
+                    last_name: user.lastName ?? existingUser.first_name,
+                    term_of_study: user.termOfStudy ?? existingUser.term_of_study,
+                    program_name: user.programName ?? existingUser.program_name,
+                    profile_picture: user.profilePhoto ?? existingUser.profile_photo,
+                    encrypted_password: existingPassword ?? existingUser.encrypted_password,
+                }
+            )
+        } catch (error) {
+            throw error;
+        }
+
+        return {
+            id: existingUser.id,
+            email: existingUser.email,
+            firstName: existingUser.first_name,
+            lastName: existingUser.last_name,
+            programName: existingUser.program_name,
+            profilePhoto: existingUser.profile_photo,
+            termOfStudy: existingUser.term_of_study,
+        }
+
     }
 
     async deleteUser(userId: number): Promise<void> {

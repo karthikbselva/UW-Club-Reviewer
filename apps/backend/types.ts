@@ -114,7 +114,9 @@ export interface UserDTO {
 
 export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto">;
 
-export type UpdateUserDTO = Omit<UserDTO, "id" | "email">;
+export type UpdateUserDTO = Omit<UserDTO, "id" | "email"> & {
+    updatedPassword: Password;
+};
 
 export interface ReviewDTO {
   id: number;
