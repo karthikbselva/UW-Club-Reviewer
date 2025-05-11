@@ -8,7 +8,7 @@ const salt = genSaltSync(10);
 
 class UserService implements IUserService {
     async createUser(user: CreateUserDTO, password: CreatePasswordDTO): Promise<UserDTO> {
-        let newUser : UserModel;
+        let newUser: UserModel;
         let newPassword: Password;
         try {
             const hashedPassword = hashSync(password.unhashed_password, salt);
@@ -22,7 +22,7 @@ class UserService implements IUserService {
                 last_name: user.lastName,
                 program_name: user.programName,
                 term_of_study: user.termOfStudy,
-                encrypted_password: newPassword, 
+                encrypted_password: newPassword,
             })
         } catch (error) {
             throw error;
@@ -39,7 +39,7 @@ class UserService implements IUserService {
         }
     }
     async getUserById(userId: number): Promise<UserDTO> {
-        let existingUser : UserModel | null;
+        let existingUser: UserModel | null;
 
         try {
             existingUser = await UserModel.findByPk(userId);
@@ -47,11 +47,11 @@ class UserService implements IUserService {
             throw error;
         }
 
-        if(!existingUser) {
+        if (!existingUser) {
             throw new Error("User not found");
         }
 
-        if(!existingUser.profile_photo) {
+        if (!existingUser.profile_photo) {
             return {
                 id: existingUser.id,
                 email: existingUser.email,
@@ -75,29 +75,29 @@ class UserService implements IUserService {
     }
 
     async updateUser(userId: number, user: UpdateUserDTO): Promise<UserDTO> {
-        let existingUser : UserModel | null;
-        let existingPassword : Password | null;
+        let existingUser: UserModel | null;
+        let existingPassword: Password | null;
         try {
-            existingPassword = await Password.findOne({where: {userId: userId}})
+            existingPassword = await Password.findOne({ where: { userId: userId } })
             existingUser = await UserModel.findByPk(userId);
         } catch (error) {
             throw error;
         }
 
-        if(!existingUser) {
-             throw new Error("User not found");
+        if (!existingUser) {
+            throw new Error("User not found");
         }
 
-        if(!existingPassword) {
+        if (!existingPassword) {
             throw new Error("No Password found")
         }
 
         try {
-            if(existingPassword) {
+            if (existingPassword) {
                 const updatedHashedPassword = hashSync(user.updatedPassword.password_hash, salt);
                 await existingPassword.update({
-                password_hash: updatedHashedPassword,
-            })
+                    password_hash: updatedHashedPassword,
+                })
             } else {
                 existingPassword = null;
             }
@@ -129,14 +129,14 @@ class UserService implements IUserService {
     }
 
     async deleteUser(userId: number): Promise<void> {
-        let existingUser : UserModel | null;
+        let existingUser: UserModel | null;
         try {
             existingUser = await UserModel.findByPk(userId);
         } catch (error) {
             throw error;
         }
 
-        if(!existingUser) {
+        if (!existingUser) {
             throw new Error("User not found");
         }
 
