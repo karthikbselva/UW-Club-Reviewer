@@ -1,6 +1,9 @@
 import { UserDTO, TokenDTO, AuthDTO } from "../../../types";
 import IAuthService from "../interfaces/authService";
 const jwt = require('jsonwebtoken');
+import UserModel from "../../models/user.model";
+import Password from "../../models/password.model";
+import { lstat } from "fs";
 require('dotenv').config()
 
 class AuthService implements IAuthService {
@@ -16,7 +19,7 @@ class AuthService implements IAuthService {
 
     async renewToken(auth: AuthDTO): Promise<TokenDTO> {
         let payload;
-        
+
         try {
             payload = jwt.verify(auth.token.refreshToken, process.env.REFRESH_TOKEN_SECRET);
         } catch (error) {
@@ -33,5 +36,47 @@ class AuthService implements IAuthService {
             refreshToken: newRefreshToken,
             expiresIn: 24,
         }
+    }
+    
+    async login(email: string, password: string): Promise<UserDTO> {
+        let existingUser : UserModel | null;
+
+
+        try {
+            existingUser = await UserModel.findOne({where: {email: email}});
+        } catch (error) {
+            throw error;
+        }
+
+        if(!existingUser) {
+            throw new Error("User with email not found");
+        }
+
+        let userPassword : Password | null;
+
+        try {
+            userPassword = await Password.findOne({where: {userId: existingUser.id}})
+        } catch (error) {
+           throw error;
+        }
+
+        if(!userPassword) {
+            throw new Error ("User does not have password stored");
+        }
+
+        if (password != userPassword.password_hash) {
+            throw new Error("Incorrect Password");
+        }
+
+        return {
+            id: existingUser.id,
+            email: existingUser.email,
+            firstName: existingUser.first_name,
+            lastName: existingUser.last_name,
+            programName: existingUser.program_name,
+            termOfStudy: existingUser.term_of_study,
+            profilePhoto: existingUser.profile_photo,
+        }
+
     }
 }

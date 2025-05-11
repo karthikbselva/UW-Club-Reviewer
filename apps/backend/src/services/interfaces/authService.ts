@@ -6,7 +6,7 @@ interface IAuthService {
     renewToken(auth: AuthDTO) : Promise<TokenDTO>;
     //revokeToken() : Promise <void>;
     //resetPassword() : Promise<void>;
-    //login() : Promise<UserDTO>;
+    login(email: string, password: string) : Promise<UserDTO>;
     //logout() : Promise <void>;
 }
 
