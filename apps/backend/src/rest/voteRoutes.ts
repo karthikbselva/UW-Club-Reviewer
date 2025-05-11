@@ -32,7 +32,7 @@ voteRouter.post("/votes", async (req, res) => {
     
 })
 
-voteRouter.delete("/votes/:userId/:reviewId", async (req, res) => {
+voteRouter.delete("/votes/:reviewId/:userId", async (req, res) => {
     const userId = parseInt(req.params.userId);
     const reviewId = parseInt(req.params.reviewId);
 
