@@ -1,9 +1,9 @@
-import { TokenDTO, UserDTO } from "../../../types";
+import { AuthDTO, TokenDTO, UserDTO } from "../../../types";
 
 
 interface IAuthService {
     generateToken(user: UserDTO): Promise <TokenDTO>;
-    //renewToken() : Promise<void>;
+    renewToken(auth: AuthDTO) : Promise<TokenDTO>;
     //revokeToken() : Promise <void>;
     //resetPassword() : Promise<void>;
     //login() : Promise<UserDTO>;

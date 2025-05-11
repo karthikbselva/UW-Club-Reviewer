@@ -149,3 +149,8 @@ export interface TokenDTO {
   refreshToken: string,
   expiresIn: number,
 }
+
+export interface AuthDTO {
+  user: UserDTO,
+  token: TokenDTO,
+}
