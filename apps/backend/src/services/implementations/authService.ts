@@ -4,18 +4,18 @@ const jwt = require('jsonwebtoken');
 import UserModel from "../../models/user.model";
 import Password from "../../models/password.model";
 import bcrypt from "bcrypt-ts";
-import { lstat } from "fs";
 
 require('dotenv').config()
 
 class AuthService implements IAuthService {
     async generateToken(user: UserDTO): Promise<TokenDTO> {
-        const accessToken = jwt.sign({userId: user.id}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '24h'});
-        const refreshToken = jwt.sign({userId: user.id}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '24h'});
+
+        const accessToken = await jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
+        const refreshToken = await jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '24h'});
+
         return {
             accessToken: accessToken,
             refreshToken: refreshToken,
-            expiresIn: 24,
         }
     }
 
@@ -23,20 +23,21 @@ class AuthService implements IAuthService {
         let payload;
 
         try {
-            payload = jwt.verify(auth.token.refreshToken, process.env.REFRESH_TOKEN_SECRET);
+            payload = await jwt.verify(auth.token.refreshToken, process.env.REFRESH_TOKEN_SECRET);
         } catch (error) {
             throw error;
         }
 
-        const userId = payload.userId;
-
-        const newAccessToken = jwt.sign({userId}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '24h'});
-        const newRefreshToken = jwt.sign({userId}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '24h'});
+        if(!payload) {
+            throw new Error("Token expired");
+        }
+        
+        const newAccessToken = await jwt.sign(auth.user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
+        const newRefreshToken = await jwt.sign(auth.user, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '24h'});
 
         return {
             accessToken: newAccessToken,
             refreshToken: newRefreshToken,
-            expiresIn: 24,
         }
     }
     
@@ -86,6 +87,5 @@ class AuthService implements IAuthService {
             termOfStudy: existingUser.term_of_study,
             profilePhoto: existingUser.profile_photo,
         }
-
     }
 }
