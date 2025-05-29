@@ -1,5 +1,5 @@
 import baseAPIClient from "./BaseAPIClient";
-import { ClubDTO, CreateClubDTO, UpdateClubDTO } from "../../../types";
+import { ClubDTO, CreateClubDTO, UpdateClubDTO } from "../../types";
 
 const get = async (id: number): Promise<ClubDTO> => {
     try {

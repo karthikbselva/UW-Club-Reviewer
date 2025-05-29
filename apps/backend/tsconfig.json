@@ -29,6 +29,6 @@
       "jest.config.js",
       ".eslint.config.mjs", 
       ".prettierrc", 
-      ".prettierignore"
-, "../types.ts"  ]
+      ".prettierignore",
+       "types.ts"  ]
   }

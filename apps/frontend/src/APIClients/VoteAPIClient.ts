@@ -1,5 +1,5 @@
 import baseAPIClient from "./BaseAPIClient";
-import { ReviewDTO, AddVoteDTO } from "../../../types";
+import { ReviewDTO, AddVoteDTO } from "../../types";
 
 const create = async (formData: AddVoteDTO): Promise<ReviewDTO> => {
     try {

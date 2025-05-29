@@ -4,7 +4,7 @@ import {
   CreateClubDTO,
   UpdateClubDTO,
   UpdateClubResponseDTO,
-} from "../../../../types";
+} from "../../../types";
 
 interface IClubService {
   createClub(clubDTO: CreateClubDTO): Promise<ClubFullDTO>;

@@ -1,4 +1,4 @@
-import Password from "./backend/src/models/password.model";
+//import Password from "./src/models/password.model";
 
 const CategoryValues = [
   "Academic",
@@ -112,13 +112,13 @@ export interface UserDTO {
   profilePhoto: string | null;
 }
 
-export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto"> & {
-  newPassword: Password;
-};
+// export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto"> & {
+//   newPassword: Password;
+// };
 
-export type UpdateUserDTO = Omit<UserDTO, "id" | "email"> & {
-    updatedPassword: Password;
-};
+// export type UpdateUserDTO = Omit<UserDTO, "id" | "email"> & {
+//     updatedPassword: Password;
+// };
 
 export interface ReviewDTO {
   id: number;

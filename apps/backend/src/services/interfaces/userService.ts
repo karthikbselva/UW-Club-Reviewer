@@ -1,4 +1,4 @@
-import { UserDTO, CreateUserDTO, UpdateUserDTO} from "../../../../types";
+import { UserDTO, CreateUserDTO, UpdateUserDTO} from "../../../types";
 
 interface IUserService {
     createUser(user: CreateUserDTO): Promise<UserDTO>;

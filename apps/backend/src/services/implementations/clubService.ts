@@ -7,7 +7,7 @@ import {
   CreateClubDTO,
   UpdateClubDTO,
   UpdateClubResponseDTO,
-} from "../../../../types";
+} from "../../../types";
 import ClubModel from "../../models/club.model";
 import ScheduleModel from "../../models/schedule.model";
 import SocialModel from "../../models/social.model";
