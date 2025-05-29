@@ -31,35 +31,40 @@ export const createClubDTOValidator = async (
       .status(400)
       .send(getApiValidationError("schedule", "boolean", true));
   }
-  if (!validatePrimitive(req.body.socials.email, "string")) {
+  if (!validatePrimitive(req.body.social.email, "string")) {
     return res
       .status(400)
-      .send(getApiValidationError("socials.email", "string"));
+      .send(getApiValidationError("social.email", "string"));
   }
-  if (!validatePrimitive(req.body.socials.instagram, "string")) {
+  if (!validatePrimitive(req.body.social.instagram, "string")) {
     return res
       .status(400)
-      .send(getApiValidationError("socials.instagram", "string"));
+      .send(getApiValidationError("social.instagram", "string"));
   }
-  if (!validatePrimitive(req.body.socials.tiktok, "string")) {
+  if (!validatePrimitive(req.body.social.tiktok, "string")) {
     return res
       .status(400)
-      .send(getApiValidationError("socials.tiktok", "string"));
+      .send(getApiValidationError("social.tiktok", "string"));
   }
-  if (!validatePrimitive(req.body.socials.linkedin, "string")) {
+  if (!validatePrimitive(req.body.social.linkedin, "string")) {
     return res
       .status(400)
-      .send(getApiValidationError("socials.linkedin", "string"));
+      .send(getApiValidationError("social.linkedin", "string"));
   }
-  if (!validatePrimitive(req.body.socials.youtube, "string")) {
+  if (!validatePrimitive(req.body.social.youtube, "string")) {
     return res
       .status(400)
-      .send(getApiValidationError("socials.youtube", "string"));
+      .send(getApiValidationError("social.youtube", "string"));
   }
-  if (!validatePrimitive(req.body.socials.facebook, "string")) {
+  if (!validatePrimitive(req.body.social.facebook, "string")) {
     return res
       .status(400)
-      .send(getApiValidationError("socials.facebook", "string"));
+      .send(getApiValidationError("social.facebook", "string"));
+  }
+  if (!validatePrimitive(req.body.social.discord, "string")) {
+    return res
+      .status(400)
+      .send(getApiValidationError("social.discord", "string"));
   }
   if (!validateEnumArray(req.body.categories, CategoryEnum)) {
     return res
@@ -190,6 +195,15 @@ export const updateClubDTOValidator = async (
     return res
       .status(400)
       .send(getApiValidationError("social.facebook", "string"));
+  }
+  if (
+    req.body.name != undefined &&
+    req.body.name != null &&
+    !validatePrimitive(req.body.social.discord, "string")
+  ) {
+    return res
+      .status(400)
+      .send(getApiValidationError("social.discord", "string"));
   }
   if (
     req.body.name != undefined &&

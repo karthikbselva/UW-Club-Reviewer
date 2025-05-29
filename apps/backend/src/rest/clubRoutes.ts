@@ -18,7 +18,7 @@ clubRouter.post("/", createClubDTOValidator, async (req, res) => {
       competitionLevel: req.body.competitionLevel,
       skillLevel: req.body.skillLevel,
       schedule: req.body.schedule,
-      social: req.body.socials,
+      social: req.body.social,
       categories: req.body.categories,
     });
     res.status(200).send(newClub);
@@ -58,7 +58,7 @@ clubRouter.put("/:id", updateClubDTOValidator, async (req, res) => {
       isActive: req.body.isActive ?? null,
       bannerPhoto: req.body.bannerPhoto ?? null,
       schedule: req.body.schedule ?? null,
-      social: req.body.socials ?? null,
+      social: req.body.social ?? null,
       categories: req.body.categories ?? null,
     });
     res.status(200).send(club);

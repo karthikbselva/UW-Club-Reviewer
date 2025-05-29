@@ -39,4 +39,7 @@ export default class Social extends Model {
 
   @Column({ type: DataType.STRING, allowNull: true })
   youtube!: string | null;
+
+  @Column({ type: DataType.STRING, allowNull: true })
+  discord!: string | null;
 }

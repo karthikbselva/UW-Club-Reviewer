@@ -38,6 +38,7 @@ export interface SocialDTO {
   linkedin: string | null;
   youtube: string | null;
   facebook: string | null;
+  discord: string | null;
 }
 export type UpdateSocialDTO = Omit<SocialDTO, "id" | "clubId">;
 export interface CategoryFullDTO {

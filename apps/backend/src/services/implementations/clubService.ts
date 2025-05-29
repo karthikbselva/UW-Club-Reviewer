@@ -65,6 +65,7 @@ class ClubService implements IClubService {
           youtube: clubDTO.social.youtube,
           facebook: clubDTO.social.facebook,
           linkedin: clubDTO.social.linkedin,
+          discord: clubDTO.social.discord,
         },
         { transaction: t },
       );
@@ -118,6 +119,7 @@ class ClubService implements IClubService {
         youtube: newSocial.youtube,
         facebook: newSocial.facebook,
         linkedin: newSocial.linkedin,
+        discord: newSocial.discord,
       },
       categories: categoriesObject,
       reviews: reviewsObject,
@@ -202,6 +204,7 @@ class ClubService implements IClubService {
         youtube: club.social.youtube,
         facebook: club.social.facebook,
         linkedin: club.social.linkedin,
+        discord: club.social.discord,
       },
       categories: categoriesObject,
       reviews: reviewsObject,
@@ -266,6 +269,7 @@ class ClubService implements IClubService {
           youtube: clubDTO.social.youtube,
           facebook: clubDTO.social.facebook,
           linkedin: clubDTO.social.linkedin,
+          discord: clubDTO.social.discord,
         },
         { transaction: t },
       );
@@ -318,6 +322,7 @@ class ClubService implements IClubService {
         youtube: social.youtube,
         facebook: social.facebook,
         linkedin: social.linkedin,
+        discord: social.discord,
       },
       categories: categoriesObject,
     };
