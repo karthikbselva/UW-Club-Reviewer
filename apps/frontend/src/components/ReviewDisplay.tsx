@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { Box, Text, Button, HStack } from "@chakra-ui/react";
+// src/components/ReviewDisplay.tsx
+import React from "react";
+import { Box, Text, IconButton, HStack } from "@chakra-ui/react";
+import { ThumbsUp, ThumbsDown } from "lucide-react";
 
 type ReviewDisplayProps = {
   comment: string;
@@ -10,12 +12,6 @@ const ReviewDisplay: React.FC<ReviewDisplayProps> = ({
   comment,
   reaction,
 }) => {
-  const [likes, setLikes] = useState(0);
-
-  const handleLikeClick = () => {
-    setLikes(likes + 1);
-  };
-
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} mt={4}>
       <Text fontWeight="bold" mb={2}>
@@ -24,22 +20,22 @@ const ReviewDisplay: React.FC<ReviewDisplayProps> = ({
       <Text mb={2}>{comment}</Text>
 
       <Box mt={2}>
-        <Text>
-          Reaction:{" "}
-          {reaction === "like"
-            ? "👍 Liked"
-            : reaction === "dislike"
-            ? "👎 Disliked"
-            : "No reaction"}
-        </Text>
+        <HStack spacing={4}>
+          <Text>Liked: </Text>
+          <IconButton
+            aria-label="Like"
+            icon={<ThumbsUp />}
+            colorScheme={reaction === "like" ? "green" : "gray"}
+            variant={reaction === "like" ? "solid" : "outline"}
+          />
+          <IconButton
+            aria-label="Dislike"
+            icon={<ThumbsDown />}
+            colorScheme={reaction === "dislike" ? "red" : "gray"}
+            variant={reaction === "dislike" ? "solid" : "outline"}
+          />
+        </HStack>
       </Box>
-
-      <HStack spacing={4} align="center" mt={2}>
-        <Button size="sm" colorScheme="green" onClick={handleLikeClick}>
-          👍 Like this review
-        </Button>
-        <Text>{likes} upvotes</Text>
-      </HStack>
     </Box>
   );
 };
