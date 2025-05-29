@@ -42,7 +42,7 @@ clubRouter.get("/:id", async (req, res) => {
     const club = clubService.getClubById(clubId);
     res.status(200).send(club);
   } catch (error) {
-    res.status(400).json({ eror: getErrorMessage(error) });
+    res.status(400).json({ error: getErrorMessage(error) });
   }
 });
 
@@ -63,7 +63,7 @@ clubRouter.put("/:id", updateClubDTOValidator, async (req, res) => {
     });
     res.status(200).send(club);
   } catch (error) {
-    res.status(400).json({ eror: getErrorMessage(error) });
+    res.status(400).json({ error: getErrorMessage(error) });
   }
 });
 
@@ -74,7 +74,7 @@ clubRouter.delete("/:id", async (req, res) => {
     clubService.deleteClub(clubId);
     res.status(200).send();
   } catch (error) {
-    res.status(400).json({ eror: getErrorMessage(error) });
+    res.status(400).json({ error: getErrorMessage(error) });
   }
 });
 

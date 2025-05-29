@@ -1,4 +1,4 @@
-import { ReviewDTO, CreateReviewDTO, UpdateReviewDTO } from "../../../types";
+import { ReviewDTO, CreateReviewDTO, UpdateReviewDTO } from "../../../../types";
 
 interface IReviewService {
   createReview(reviewDTO: CreateReviewDTO): Promise<ReviewDTO>;

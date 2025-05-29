@@ -5,7 +5,7 @@ import {
   validateEnumArray,
   validateArray,
 } from "./util";
-import { CategoryEnum } from "../../../types";
+import { CategoryEnum } from "../../../../types";
 
 export const createClubDTOValidator = async (
   req: Request,

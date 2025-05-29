@@ -19,7 +19,7 @@ voteRouter.post("/votes", async (req, res) => {
             reviewId: req.body.review_id,
             voteValue: req.body.vote_value,
         })
-        res.status(200).send(newVote);
+        // res.status(200).send(newVote);
         const existingReview = await reviewService.updateReview(req.body.review_id, {
             comment: null,
             likesClub: null,

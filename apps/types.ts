@@ -1,4 +1,4 @@
-import Password from "./src/models/password.model";
+import Password from "./backend/src/models/password.model";
 
 const CategoryValues = [
   "Academic",

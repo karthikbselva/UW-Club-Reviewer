@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, HasMany, HasOne } from "sequelize-typescript";
-import { TermEnum } from "../../types";
+import { TermEnum } from "../../../types";
 import Review from "./review.model";
 import Vote from "./vote.model";
 import Password from "./password.model";

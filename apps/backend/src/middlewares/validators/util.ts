@@ -3,7 +3,7 @@ type Type =
   | "boolean"
   | "integer"
   | "decimal"
-  | "ClubCategory"
+  | "CategoryEnum"
   | "SemesterEnum"
   | "DayEnum";
 

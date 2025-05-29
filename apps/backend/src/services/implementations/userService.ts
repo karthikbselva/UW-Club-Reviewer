@@ -1,4 +1,4 @@
-import { CreateUserDTO, UpdateUserDTO, UserDTO } from "../../../types";
+import { CreateUserDTO, UpdateUserDTO, UserDTO } from "../../../../types";
 import IUserService from "../interfaces/userService";
 import UserModel from "../../models/user.model";
 import { genSaltSync, hashSync } from "bcrypt-ts";

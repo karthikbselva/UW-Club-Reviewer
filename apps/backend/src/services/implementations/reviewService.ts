@@ -1,4 +1,4 @@
-import { CreateReviewDTO, ReviewDTO, UpdateReviewDTO } from "../../../types";
+import { CreateReviewDTO, ReviewDTO, UpdateReviewDTO } from "../../../../types";
 import IReviewService from "../interfaces/reviewService";
 import ReviewModel from "../../models/review.model";
 

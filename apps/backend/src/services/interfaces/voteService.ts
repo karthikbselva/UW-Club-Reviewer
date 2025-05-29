@@ -1,4 +1,4 @@
-import { VoteDTO, AddVoteDTO } from "../../../types";
+import { VoteDTO, AddVoteDTO } from "../../../../types";
 
 interface IVoteService {
   addVote(review: AddVoteDTO): Promise<VoteDTO>;
