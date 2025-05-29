@@ -1,7 +1,6 @@
 import IVoteService from "../interfaces/voteService";
 import VoteModel from "../../models/vote.model";
 import { AddVoteDTO, VoteDTO } from "../../../types";
-import { error } from "console";
 
 class VoteService implements IVoteService {
    async addVote(review: AddVoteDTO): Promise<VoteDTO> {
