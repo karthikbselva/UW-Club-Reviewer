@@ -20,7 +20,7 @@ async function scrapeForClubLinks() {
         const lastPageStr = lastPageLink.match(/page=(\d+)/);
         if (!lastPageStr) throw new Error("couldn't get last page number");
         const lastPageNum = parseInt(lastPageStr[1], 10); 
-        console.log(lastPageNum);
+        //console.log(lastPageNum);
 
         const clubPageLinks: string[] = [];
         // loop over all pages from 2...lastPageNum, for each add the page link
@@ -34,7 +34,7 @@ async function scrapeForClubLinks() {
                 if (href) clubPageLinks.push(href);
             });
         }
-        console.log(clubPageLinks);
+        //console.log(clubPageLinks);
         return clubPageLinks;
     } catch (error) {
         console.error(error);
@@ -77,7 +77,7 @@ async function scrapeSite(url: string) {
             social: socials,
             categories: [],
         });
-        console.log(`created club ${newClub.name} with id ${newClub.id}`);
+        //console.log(`created club ${newClub.name} with id ${newClub.id}`);
     } catch (error) {
         console.error(error);
     }
@@ -88,7 +88,7 @@ async function createAllClubs() {
         const mainURL = "https://clubs.wusa.ca";
         const clubRoutes = await scrapeForClubLinks();
         if (!clubRoutes) throw new Error("scraping for all club links failed");
-        console.log(clubRoutes);
+        //console.log(clubRoutes);
         for (const clubRoute of clubRoutes) {
             const fullURL = `${mainURL}${clubRoute}`;
             await scrapeSite(fullURL);

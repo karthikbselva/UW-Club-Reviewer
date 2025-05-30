@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ChakraProvider, Button, VStack, HStack, Textarea, Text, useDisclosure } from "@chakra-ui/react";
 import CustomModal from "./components/ModalContainer";
@@ -7,11 +7,14 @@ import ProductInfo from "./components/ClubDisplayCard";
 import CourseInfo from "./components/ClubInfo";
 import ClubTable from "./components/CommonTable";
 import ClubsPage from "./pages/ClubsPages";
+import ClubAPIClient from "./APIClients/ClubAPIClient";
+import { ClubSearchDTO } from "../types";
 
 const App = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [comment, setComment] = React.useState("");
+  const [clubs, setClubs] = useState<ClubSearchDTO[]>([]);
   const [reaction, setReaction] = React.useState<"like" | "dislike" | null>(null);
 
   const handleConfirm = () => {
@@ -22,11 +25,24 @@ const App = () => {
     setReaction(null);
   };
 
-  const sampleClubs = [
-    { id: 1, name: "Club A", ratings: 120, likedPercent: 85 },
-    { id: 2, name: "Club B", ratings: 98, likedPercent: 72 },
-    { id: 3, name: "Club C", ratings: 45, likedPercent: 90 },
-  ];
+  const fetchClubs = async () => {
+      try {
+        const response = await ClubAPIClient.getAll();
+        setClubs(response);
+      } catch (error) {
+        console.error("Error fetching clubs:", error);
+      }
+  };
+
+    useEffect(() => {
+      fetchClubs();
+    }, []);
+  
+  // const sampleClubs = [
+  //   { id: 1, name: "Club A", ratings: 120, likedPercent: 85 },
+  //   { id: 2, name: "Club B", ratings: 98, likedPercent: 72 },
+  //   { id: 3, name: "Club C", ratings: 45, likedPercent: 90 },
+  // ];
 
   return (
     <ChakraProvider>
@@ -89,7 +105,7 @@ const App = () => {
                   competitionLevel="Intermediate"
                 />
 
-                <ClubTable clubs={sampleClubs} />
+                <ClubTable clubs={clubs} />
               </>
             }
           />

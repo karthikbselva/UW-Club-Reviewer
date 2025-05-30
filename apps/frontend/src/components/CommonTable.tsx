@@ -26,7 +26,7 @@ type ProductTableProps = {
 
 const ClubTable: React.FC<ProductTableProps> = ({ clubs }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 2;
+  const rowsPerPage = 50;
 
   const totalPages = Math.ceil(clubs.length / rowsPerPage);
 

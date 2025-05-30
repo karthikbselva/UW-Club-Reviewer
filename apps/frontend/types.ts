@@ -84,10 +84,16 @@ export interface ClubFullDTO {
   categories: CategoryDTO[];
   //reviews: ReviewDTO[];
 }
-export type ClubSearchDTO = Omit<
-  ClubFullDTO,
-  "social" | "categories"/* | "reviews"*/
->;
+export interface ClubSearchDTO {
+  id: number;
+  name: string;
+  ratings: number;
+  likedPercent: number;
+}
+//export type ClubSearchDTO = Omit<
+//  ClubFullDTO,
+//  "social" | "categories"/* | "reviews"*/
+//>;
 export type ClubDTO = Omit<
   ClubFullDTO,
   "schedule" | "social" | "categories"/* | "reviews"*/
@@ -124,13 +130,13 @@ export interface UserDTO {
   profilePhoto: string | null;
 }
 
-/*export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto"> & {
+export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto"> & {
   newPassword: Password;
-};*/
+};
 
-/*export type UpdateUserDTO = Omit<UserDTO, "id" | "email"> & {
+export type UpdateUserDTO = Omit<UserDTO, "id" | "email"> & {
     updatedPassword: Password;
-};*/
+};
 
 export interface ReviewDTO {
   id: number;

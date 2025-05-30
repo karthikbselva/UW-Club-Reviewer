@@ -96,7 +96,7 @@ class reviewService implements IReviewService {
     const likedReviews = reviews.filter((review) => (review.likes_club));
     const likedReviewLength = likedReviews.length;
 
-    return likedReviewLength / totalReviewLength;
+    return (likedReviewLength / totalReviewLength) * 100;
   }
 }
 export default reviewService;

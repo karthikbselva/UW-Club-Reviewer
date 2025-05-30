@@ -12,6 +12,7 @@ import ClubModel from "../../models/club.model";
 import ScheduleModel from "../../models/schedule.model";
 import SocialModel from "../../models/social.model";
 import CategoryModel from "../../models/category.model";
+import ReviewModel from "../../models/review.model";
 import { sequelize } from "../../models/index";
 import { Transaction } from "sequelize";
 
@@ -127,28 +128,24 @@ class ClubService implements IClubService {
   }
 
   async getClubs(): Promise<ClubSearchDTO[]> {
-    const queriedClubs = await ClubModel.findAll({
-      include: ["schedule"],
-    });
-    const clubDTOs = queriedClubs.map((club) => ({
-      id: club.id,
-      name: club.name,
-      description: club.description,
-      competitionLevel: club.competition_level,
-      skillLevel: club.skill_level,
-      isActive: club.is_active,
-      bannerPhoto: club.banner_photo,
-      schedule: {
-        id: club.schedule.id,
-        clubId: club.schedule.club_id,
-        sunday: club.schedule.sunday,
-        monday: club.schedule.monday,
-        tuesday: club.schedule.tuesday,
-        wednesday: club.schedule.wednesday,
-        thursday: club.schedule.thursday,
-        friday: club.schedule.friday,
-        saturday: club.schedule.saturday,
-      },
+    const queriedClubs = await ClubModel.findAll();
+    const clubDTOs = await Promise.all(queriedClubs.map(async (club) => {
+      const reviews = await ReviewModel.findAll({ where: { club_id: club.id } });
+
+      if (!reviews) {
+        throw new Error(`Reviews with ClubId ${club.id} not found`);
+      }
+
+      const totalReviewLength = reviews.length;
+      const likedReviews = reviews.filter((review) => (review.likes_club));
+      const likedReviewLength = likedReviews.length;
+
+      return {
+        id: club.id,
+        name: club.name,
+        ratings: totalReviewLength,
+        likedPercent: (totalReviewLength == 0) ? 0 : Math.round((likedReviewLength / totalReviewLength) * 100),
+      }
     }));
 
     return clubDTOs;
@@ -175,7 +172,6 @@ class ClubService implements IClubService {
     //   likesClub: review.likes_club,
     //   voteSum: review.vote_sum,
     // }));
-    console.log("reached this point");
     return {
       id: club.id,
       name: club.name,

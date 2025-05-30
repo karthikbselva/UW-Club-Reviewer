@@ -40,7 +40,7 @@ clubRouter.get("/:id", async (req, res) => {
   try {
     const clubId = parseInt(req.params.id);
     const club = await clubService.getClubById(clubId);
-    console.log(club);
+    //console.log(club);
     res.status(200).json(club);
   } catch (error) {
     res.status(400).json({ error: getErrorMessage(error) });

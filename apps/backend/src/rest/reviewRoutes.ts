@@ -56,7 +56,7 @@ reviewRouter.delete("/:id", async (req, res) => {
 reviewRouter.get("/sum/:clubId", async (req, res) => {
   try {
     const sum = await reviewService.getReviewSum(parseInt(req.params.clubId));
-    console.log(sum);
+    //console.log(sum);
     res.status(200).json(sum);
   } catch (error) {
     res.status(400).json({ error: getErrorMessage(error) });
@@ -66,7 +66,7 @@ reviewRouter.get("/sum/:clubId", async (req, res) => {
 reviewRouter.get("/percentage/:clubId", async (req, res) => {
   try {
     const percentage = await reviewService.getLikedPercentage(parseInt(req.params.clubId));
-    console.log(percentage);
+    //console.log(percentage);
     res.status(200).json(percentage);
   } catch (error) {
     res.status(400).json({ error: getErrorMessage(error) });
