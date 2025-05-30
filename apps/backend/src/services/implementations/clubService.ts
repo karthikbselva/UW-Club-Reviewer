@@ -30,10 +30,10 @@ class ClubService implements IClubService {
         {
           name: clubDTO.name,
           description: clubDTO.description,
-          competitionLevel: clubDTO.competitionLevel,
-          skillLevel: clubDTO.skillLevel,
-          isActive: true,
-          bannerPhoto: "",
+          competition_level: clubDTO.competitionLevel,
+          skill_level: clubDTO.skillLevel,
+          is_active: true,
+          banner_photo: "",
           categories: categoryArray,
         },
         {
@@ -82,14 +82,14 @@ class ClubService implements IClubService {
         name: category.name as CategoryType,
       }),
     );
-    const reviewsObject = (await newClub.$get("reviews")).map((review) => ({
-      id: review.id,
-      userId: review.user_id,
-      clubId: review.club_id,
-      comment: review.comment,
-      likesClub: review.likes_club,
-      voteSum: review.vote_sum,
-    }));
+    // const reviewsObject = (await newClub.$get("reviews")).map((review) => ({
+    //   id: review.id,
+    //   userId: review.user_id,
+    //   clubId: review.club_id,
+    //   comment: review.comment,
+    //   likesClub: review.likes_club,
+    //   voteSum: review.vote_sum,
+    // }));
 
     return {
       id: newClub.id,
@@ -122,7 +122,7 @@ class ClubService implements IClubService {
         discord: newSocial.discord,
       },
       categories: categoriesObject,
-      reviews: reviewsObject,
+      //reviews: reviewsObject,
     };
   }
 
@@ -156,7 +156,7 @@ class ClubService implements IClubService {
 
   async getClubById(clubId: number): Promise<ClubFullDTO> {
     const club = await ClubModel.findByPk(clubId, {
-      include: ["schedule", "social", "categories", "reviews"],
+      include: ["schedule", "social", "categories"/*, "reviews"*/],
     });
 
     if (!club) {
@@ -167,15 +167,15 @@ class ClubService implements IClubService {
       id: category.id,
       name: category.name as CategoryType,
     }));
-    const reviewsObject = club.reviews.map((review) => ({
-      id: review.id,
-      userId: review.user_id,
-      clubId: review.club_id,
-      comment: review.comment,
-      likesClub: review.likes_club,
-      voteSum: review.vote_sum,
-    }));
-
+    // const reviewsObject = club.reviews.map((review) => ({
+    //   id: review.id,
+    //   userId: review.user_id,
+    //   clubId: review.club_id,
+    //   comment: review.comment,
+    //   likesClub: review.likes_club,
+    //   voteSum: review.vote_sum,
+    // }));
+    console.log("reached this point");
     return {
       id: club.id,
       name: club.name,
@@ -207,7 +207,7 @@ class ClubService implements IClubService {
         discord: club.social.discord,
       },
       categories: categoriesObject,
-      reviews: reviewsObject,
+      //reviews: reviewsObject,
     };
   }
 
@@ -236,11 +236,11 @@ class ClubService implements IClubService {
       {
         name: clubDTO.name ?? club.name,
         description: clubDTO.description ?? club.description,
-        competitionLevel: clubDTO.competitionLevel ?? club.competition_level,
-        skillLevel: clubDTO.skillLevel ?? club.skill_level,
+        competition_level: clubDTO.competitionLevel ?? club.competition_level,
+        skill_level: clubDTO.skillLevel ?? club.skill_level,
         categories: clubDTO.categories ?? club.categories,
-        isActive: clubDTO.isActive ?? club.is_active,
-        bannerPhoto: clubDTO.bannerPhoto ?? club.banner_photo,
+        is_active: clubDTO.isActive ?? club.is_active,
+        banner_photo: clubDTO.bannerPhoto ?? club.banner_photo,
       },
       { transaction: t },
     );

@@ -9,7 +9,7 @@ const reviewService: IReviewService = new ReviewService();
 reviewRouter.post("/", async (req, res) => {
   try {
     const newReview = reviewService.createReview({
-      userId: req.body.user_id,
+      //userId: req.body.user_id,
       clubId: req.body.club_id,
       comment: req.body.comment,
       likesClub: req.body.likes_club,

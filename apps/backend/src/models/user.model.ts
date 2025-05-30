@@ -27,8 +27,8 @@ export default class User extends Model {
   @HasOne(() => Password)
   password_hash!: Password;
 
-  @HasMany(() => Review)
-  reviews!: Review[];
+  //@HasMany(() => Review)
+  //reviews!: Review[];
 
   @HasMany(() => Vote)
   votes!: Vote[];

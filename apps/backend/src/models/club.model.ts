@@ -23,13 +23,13 @@ export default class Club extends Model {
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
   name!: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.TEXT, allowNull: false })
   description!: string;
 
-  @Column({ type: DataType.NUMBER, allowNull: false })
+  @Column({ type: DataType.INTEGER, allowNull: false })
   competition_level!: number;
 
-  @Column({ type: DataType.NUMBER, allowNull: false })
+  @Column({ type: DataType.INTEGER, allowNull: false })
   skill_level!: number;
 
   @Column({ type: DataType.BOOLEAN, allowNull: false })

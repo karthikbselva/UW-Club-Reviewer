@@ -29,6 +29,17 @@ export enum TermEnum {
   FIVE_B = "5B",
 }
 
+const SocialValues = [
+  "email",
+  "instagram",
+  "tiktok",
+  "linkedin",
+  "youtube",
+  "facebook",
+  "discord"
+] as const;
+export const SocialEnum: SocialType[] = [...SocialValues];
+export type SocialType = (typeof SocialValues)[number];
 export interface SocialDTO {
   id: number;
   clubId: number;
@@ -71,15 +82,15 @@ export interface ClubFullDTO {
   schedule: ScheduleDTO;
   social: SocialDTO;
   categories: CategoryDTO[];
-  reviews: ReviewDTO[];
+  //reviews: ReviewDTO[];
 }
 export type ClubSearchDTO = Omit<
   ClubFullDTO,
-  "social" | "categories" | "reviews"
+  "social" | "categories"/* | "reviews"*/
 >;
 export type ClubDTO = Omit<
   ClubFullDTO,
-  "schedule" | "social" | "categories" | "reviews"
+  "schedule" | "social" | "categories"/* | "reviews"*/
 >;
 export interface UpdateClubDTO {
   name: string | null;
@@ -92,7 +103,7 @@ export interface UpdateClubDTO {
   social: UpdateSocialDTO | null;
   categories: CategoryType[] | null;
 }
-export type UpdateClubResponseDTO = Omit<ClubFullDTO, "reviews">;
+export type UpdateClubResponseDTO = /*Omit<*/ClubFullDTO/*, "reviews">*/;
 export interface CreateClubDTO {
   name: string;
   description: string;
@@ -113,17 +124,17 @@ export interface UserDTO {
   profilePhoto: string | null;
 }
 
-// export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto"> & {
-//   newPassword: Password;
-// };
+/*export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto"> & {
+  newPassword: Password;
+};*/
 
-// export type UpdateUserDTO = Omit<UserDTO, "id" | "email"> & {
-//     updatedPassword: Password;
-// };
+/*export type UpdateUserDTO = Omit<UserDTO, "id" | "email"> & {
+    updatedPassword: Password;
+};*/
 
 export interface ReviewDTO {
   id: number;
-  userId: number;
+  //userId: number;
   clubId: number;
   comment: string;
   likesClub: boolean;

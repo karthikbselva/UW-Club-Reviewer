@@ -21,7 +21,7 @@ clubRouter.post("/", createClubDTOValidator, async (req, res) => {
       social: req.body.social,
       categories: req.body.categories,
     });
-    res.status(200).send(newClub);
+    res.status(200).json(newClub);
   } catch (error) {
     res.status(400).json({ error: getErrorMessage(error) });
   }
@@ -30,7 +30,7 @@ clubRouter.post("/", createClubDTOValidator, async (req, res) => {
 clubRouter.get("/", async (req, res) => {
   try {
     const clubs = await clubService.getClubs();
-    res.status(200).send(clubs);
+    res.status(200).json(clubs);
   } catch (error) {
     res.status(400).json({ error: getErrorMessage(error) });
   }
@@ -39,8 +39,9 @@ clubRouter.get("/", async (req, res) => {
 clubRouter.get("/:id", async (req, res) => {
   try {
     const clubId = parseInt(req.params.id);
-    const club = clubService.getClubById(clubId);
-    res.status(200).send(club);
+    const club = await clubService.getClubById(clubId);
+    console.log(club);
+    res.status(200).json(club);
   } catch (error) {
     res.status(400).json({ error: getErrorMessage(error) });
   }
@@ -61,7 +62,7 @@ clubRouter.put("/:id", updateClubDTOValidator, async (req, res) => {
       social: req.body.social ?? null,
       categories: req.body.categories ?? null,
     });
-    res.status(200).send(club);
+    res.status(200).json(club);
   } catch (error) {
     res.status(400).json({ error: getErrorMessage(error) });
   }

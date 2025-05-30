@@ -3,6 +3,7 @@ import { sequelize } from "./models";
 import clubRouter from "./rest/clubRoutes";
 import reviewRouter from "./rest/reviewRoutes";
 import voteRouter from "./rest/voteRoutes";
+import { createAllClubs, scrapeForClubLinks } from "./clubScraper";
 
 const app = express();
 app.use(express.json());
@@ -16,3 +17,5 @@ sequelize.authenticate();
 app.listen({ port: process.env.PORT || 8080 }, () => {
   console.info(`Server is listening on port ${process.env.PORT || 8080}!`);
 });
+
+sequelize.sync({ alter: true });

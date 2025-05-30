@@ -26,7 +26,7 @@ voteRouter.post("/votes", async (req, res) => {
         voteSum: await voteService.getVoteSum(req.body.review_id),
       },
     );
-    res.status(200).send(existingReview);
+    res.status(200).json(existingReview);
   } catch (error) {
     res.status(400).json({ error: getErrorMessage(error) });
   }

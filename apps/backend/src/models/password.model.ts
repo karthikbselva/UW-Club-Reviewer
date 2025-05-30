@@ -8,8 +8,8 @@ import User from './user.model';
 })
 export default class Password extends Model {
     @ForeignKey(() => User)
-    @Column({ type: DataType.NUMBER, allowNull: false })
-    user_id!: string;
+    @Column({ type: DataType.INTEGER, allowNull: false })
+    user_id!: number;
 
     @BelongsTo(() => User)
     user!: User

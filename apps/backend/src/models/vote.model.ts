@@ -18,7 +18,7 @@ import Review from "../models/review.model";
 export default class Vote extends Model {
   @Index({ name: "user_review_id", unique: true })
   @ForeignKey(() => User)
-  @Column({ type: DataType.NUMBER, allowNull: false })
+  @Column({ type: DataType.INTEGER, allowNull: false })
   user_id!: number;
 
   @BelongsTo(() => User)
@@ -26,12 +26,12 @@ export default class Vote extends Model {
 
   @Index({ name: "user_review_id", unique: true })
   @ForeignKey(() => Review)
-  @Column({ type: DataType.NUMBER, allowNull: false })
+  @Column({ type: DataType.INTEGER, allowNull: false })
   review_id!: number;
 
   @BelongsTo(() => Review)
   review!: Review;
 
-  @Column({ type: DataType.NUMBER, allowNull: false })
+  @Column({ type: DataType.INTEGER, allowNull: false })
   vote_value!: number;
 }

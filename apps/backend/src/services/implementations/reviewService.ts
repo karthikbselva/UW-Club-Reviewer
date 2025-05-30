@@ -5,7 +5,7 @@ import ReviewModel from "../../models/review.model";
 class reviewService implements IReviewService {
   async createReview(reviewDTO: CreateReviewDTO): Promise<ReviewDTO> {
     const newReview = await ReviewModel.create({
-      user_id: reviewDTO.userId,
+      //user_id: reviewDTO.userId,
       club_id: reviewDTO.clubId,
       comment: reviewDTO.comment,
       likes_club: reviewDTO.likesClub,
@@ -13,7 +13,7 @@ class reviewService implements IReviewService {
 
     return {
       id: newReview.id,
-      userId: newReview.user_id,
+      //userId: newReview.user_id,
       clubId: newReview.club_id,
       comment: newReview.comment,
       likesClub: newReview.likes_club,
@@ -29,7 +29,7 @@ class reviewService implements IReviewService {
 
     return reviews.map((review) => ({
       id: review.id,
-      userId: review.user_id,
+      //userId: review.user_id,
       clubId: review.club_id,
       comment: review.comment,
       likesClub: review.likes_club,
@@ -57,7 +57,7 @@ class reviewService implements IReviewService {
 
     return {
       id: existingReview.id,
-      userId: existingReview.user_id,
+      //userId: existingReview.user_id,
       clubId: existingReview.club_id,
       comment: existingReview.comment,
       likesClub: existingReview.likes_club,
