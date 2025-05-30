@@ -30,7 +30,7 @@ services:
     container_name: uw_club_reviewer_db
     image: mysql:latest
     ports:
-      - 3308:3306
+      - 3306:3306
     volumes:
       - mysql_data:/var/lib/mysql
       - ./mysql-config:/etc/mysql/conf.d
