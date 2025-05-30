@@ -47,6 +47,6 @@ export default class Club extends Model {
   @BelongsToMany(() => Category, () => ClubCategory)
   categories!: Category[];
 
-  @HasMany(() => Review)
-  reviews!: Review[];
+  //@HasMany(() => Review)
+  //reviews!: Review[];
 }

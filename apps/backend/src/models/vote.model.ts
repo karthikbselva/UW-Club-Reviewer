@@ -21,8 +21,8 @@ export default class Vote extends Model {
   @Column({ type: DataType.INTEGER, allowNull: false })
   user_id!: number;
 
-  @BelongsTo(() => User)
-  user!: User;
+  //@BelongsTo(() => User)
+  //user!: User;
 
   @Index({ name: "user_review_id", unique: true })
   @ForeignKey(() => Review)

@@ -30,6 +30,6 @@ export default class User extends Model {
   //@HasMany(() => Review)
   //reviews!: Review[];
 
-  @HasMany(() => Vote)
-  votes!: Vote[];
+  //@HasMany(() => Vote)
+  //votes!: Vote[];
 }
