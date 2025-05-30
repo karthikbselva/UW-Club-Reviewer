@@ -13,23 +13,24 @@ const ReviewDisplay: React.FC<ReviewDisplayProps> = ({
   reaction,
 }) => {
   return (
-    <Box borderWidth="1px" borderRadius="lg" p={4} mt={4}>
+    <Box borderWidth="1px" borderRadius="lg" p={4} mt={4} maxW="885px">
       <Text mb={2}>{comment}</Text>
 
       <Box mt={2}>
         <HStack spacing={4}>
-          <Text>Liked: </Text>
           <IconButton
             aria-label="Like"
             icon={<ThumbsUp />}
-            colorScheme={reaction === "like" ? "green" : "gray"}
+            color="blue.500"
             variant={reaction === "like" ? "solid" : "outline"}
+            size="sm"
           />
           <IconButton
             aria-label="Dislike"
             icon={<ThumbsDown />}
-            colorScheme={reaction === "dislike" ? "red" : "gray"}
+            color="blue.500"
             variant={reaction === "dislike" ? "solid" : "outline"}
+            size="sm"
           />
         </HStack>
       </Box>

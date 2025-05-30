@@ -36,12 +36,18 @@ const App = () => {
           <Route
             path="/"
             element={
-              <Box p={4}>
+              <Box
+                p={4}
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+              >
                 <Text
                   fontSize="xl"
                   fontWeight="medium"
                   color="gray.600"
                   mb={4}
+                  textAlign="center"
                 >
                   List of Clubs
                 </Text>

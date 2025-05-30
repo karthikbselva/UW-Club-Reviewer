@@ -1,4 +1,3 @@
-// CourseInfo.tsx
 import React, { useState } from "react";
 import {
   Box,
@@ -33,24 +32,23 @@ const ClubInfo: React.FC<ClubInfoProps> = ({
     setIsExpanded(!isExpanded);
   };
 
-  // Round the likedPercent to the nearest whole number
   const roundedLikedPercent = Math.round(likedPercent);
 
   return (
-    <HStack spacing={2} align="stretch">
+    <HStack spacing={4} align="stretch" w="100%">
       {/* Main Card */}
       <Box
         bg="white"
         p={4}
         borderRadius="md"
         boxShadow="md"
-        w="60%"
+        w="75%"
         display="flex"
         flexDirection="column"
         justifyContent="space-between"
       >
         <VStack align="start" spacing={2} flexGrow={1}>
-          <Text fontSize="lg" fontWeight="bold" color="gray.700">
+          <Text fontSize="2xl" fontWeight="bold" color="gray.700">
             {title}
           </Text>
           <Box
@@ -106,7 +104,7 @@ const ClubInfo: React.FC<ClubInfoProps> = ({
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        minW="140px"
+        minW="120px"
         flexShrink="0"
       >
         <CircularProgress
