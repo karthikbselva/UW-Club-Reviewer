@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import LevelBars from "./LevelBar";
 
-type CourseInfoProps = {
+type ClubInfoProps = {
   title: string;
   description: string;
   likedPercent: number;
@@ -20,7 +20,7 @@ type CourseInfoProps = {
   competitionLevel: "Beginner" | "Intermediate" | "Advanced";
 };
 
-const CourseInfo: React.FC<CourseInfoProps> = ({
+const ClubInfo: React.FC<ClubInfoProps> = ({
   title,
   description,
   likedPercent,
@@ -102,4 +102,4 @@ const CourseInfo: React.FC<CourseInfoProps> = ({
   );
 };
 
-export default CourseInfo;
+export default ClubInfo;

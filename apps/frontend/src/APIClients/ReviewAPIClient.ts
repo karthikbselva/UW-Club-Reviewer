@@ -1,7 +1,7 @@
 import baseAPIClient from "./BaseAPIClient";
 import { ReviewDTO, CreateReviewDTO, UpdateReviewDTO } from "../../types";
 
-const get = async (id: number): Promise<ReviewDTO> => {
+const get = async (id: number): Promise<ReviewDTO[]> => {
     try {
         const { data } = await baseAPIClient.get(`/reviews/${id}`);
         return data;

@@ -18,6 +18,7 @@
     "bcrypt": "^5.1.1",
     "bcrypt-ts": "^7.0.0",
     "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "migrate": "^2.1.0",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.1",
+    "@types/cors": "^2.8.18",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.15.2",

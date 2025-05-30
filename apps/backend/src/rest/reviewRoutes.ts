@@ -16,7 +16,7 @@ reviewRouter.post("/", async (req, res) => {
     });
     res.status(200).json(newReview);
   } catch (error) {
-    res.status(400).json({ error: getErrorMessage(error) });
+    res.status(400).json({ error: getErrorMessage("error in creating idk") });
   }
 });
 

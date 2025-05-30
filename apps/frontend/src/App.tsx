@@ -78,7 +78,7 @@ const App = () => {
                 />
 
                 <ProductInfo title="Club A" numRatings={120} percentLiked={85} />
-
+              
                 <CourseInfo
                   title="UW Blueprint"
                   description="Goated club"
