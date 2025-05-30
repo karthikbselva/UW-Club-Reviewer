@@ -51,7 +51,7 @@ clubRouter.put("/:id", updateClubDTOValidator, async (req, res) => {
   const clubId = parseInt(req.params.id);
 
   try {
-    const club = clubService.updateClub(clubId, {
+    const club = await clubService.updateClub(clubId, {
       name: req.body.name ?? null,
       description: req.body.description ?? null,
       competitionLevel: req.body.competitionLevel ?? null,

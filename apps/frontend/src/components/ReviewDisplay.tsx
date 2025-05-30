@@ -1,6 +1,6 @@
 // src/components/ReviewDisplay.tsx
 import React from "react";
-import { Box, Text, IconButton, HStack } from "@chakra-ui/react";
+import { Box, Text, IconButton, HStack, Flex, Avatar } from "@chakra-ui/react";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 
 type ReviewDisplayProps = {
@@ -14,9 +14,13 @@ const ReviewDisplay: React.FC<ReviewDisplayProps> = ({
 }) => {
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} mt={4} maxW="885px">
-      <Text mb={2}>{comment}</Text>
+    <Flex align="center" gap={4}>
+      {/* Left: Profile circle */}
+      <Avatar src={""} size="md" />
 
-      <Box mt={2}>
+      {/* Right: Comment text and buttons */}
+      <Box flex="1">
+        <Text mb={2}>{comment}</Text>
         <HStack spacing={4}>
           <IconButton
             aria-label="Like"
@@ -34,7 +38,8 @@ const ReviewDisplay: React.FC<ReviewDisplayProps> = ({
           />
         </HStack>
       </Box>
-    </Box>
+    </Flex>
+  </Box>
   );
 };
 

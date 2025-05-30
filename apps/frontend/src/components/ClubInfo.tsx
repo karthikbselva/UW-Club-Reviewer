@@ -6,16 +6,19 @@ import {
   HStack,
   CircularProgress,
   CircularProgressLabel,
+  Link,
 } from "@chakra-ui/react";
 import LevelBars from "./LevelBar";
+import { SocialDTO } from "../../types";
 
 type ClubInfoProps = {
   title: string;
   description: string;
   likedPercent: number;
   ratings: number;
-  skillLevel: "Beginner" | "Intermediate" | "Advanced";
-  competitionLevel: "Beginner" | "Intermediate" | "Advanced";
+  skillLevel: number;
+  competitionLevel: number;
+  socials: [string, string][];
 };
 
 const ClubInfo: React.FC<ClubInfoProps> = ({
@@ -25,6 +28,7 @@ const ClubInfo: React.FC<ClubInfoProps> = ({
   ratings,
   skillLevel,
   competitionLevel,
+  socials,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -65,7 +69,9 @@ const ClubInfo: React.FC<ClubInfoProps> = ({
                 : {}
             }
           >
-            {description}
+            {description.split('\n').map((para, i) => (
+  <p key={i}>{para}</p>
+))}
           </Box>
           {description.length > 0 && (
             <Text
@@ -82,15 +88,28 @@ const ClubInfo: React.FC<ClubInfoProps> = ({
         </VStack>
 
         {/* Bottom info */}
-        <VStack align="start" spacing={2} mt={4} fontSize="sm">
-          <HStack spacing={2} align="center">
-            <Text color="gray.600">Skill: {skillLevel}</Text>
+        <VStack align="start" spacing={2} mt={4} fontSize="sm" minW="200px">
+          <HStack spacing={4} align="center" width="100%">
+            <Text color="gray.600" minW="90px" textAlign="left">Skill:</Text>
             <LevelBars level={skillLevel} />
           </HStack>
-          <HStack spacing={2} align="center">
-            <Text color="gray.600">Competition: {competitionLevel}</Text>
+          <HStack spacing={4} align="center" width="100%">
+            <Text color="gray.600" minW="90px" textAlign="left">Competition:</Text>
             <LevelBars level={competitionLevel} />
           </HStack>
+          <VStack spacing={1} align="start" width="100%" mt={4}>
+      {socials.map(([social, link]) => (
+        <HStack key={social} spacing={2}>
+          <Text fontWeight="bold" textTransform="capitalize" minW="90px" color="gray.600">
+            {social}:
+          </Text>
+          <Link href={link} color="blue.500" isExternal>
+            {link}
+          </Link>
+        </HStack>
+      ))}
+    </VStack>
+
         </VStack>
       </Box>
 

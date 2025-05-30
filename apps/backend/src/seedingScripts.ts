@@ -30,4 +30,33 @@ async function seedReviews() {
     }
 }
 
-export { seedReviews };
+async function seedClubAttributes() {
+    const BATCH_SIZE = 3;
+    try {
+        const clubs = await clubService.getClubs();
+        for (let i = 0; i < clubs.length; i += BATCH_SIZE) {
+            const batch = clubs.slice(i, i + BATCH_SIZE);
+            await Promise.all(
+              batch.map(club => {
+                const dummySkillLevel = Math.floor(Math.random() * 3) + 1;
+                const dummyCompetitionLevel = Math.floor(Math.random() * 3) + 1;
+                return clubService.updateClub(club.id, {
+                    name: null,
+                    description: null,
+                    skillLevel: dummySkillLevel,
+                    competitionLevel: dummyCompetitionLevel,
+                    isActive: null,
+                    bannerPhoto: null,
+                    schedule: null,
+                    social: null,
+                    categories: null,
+                });
+              })
+            );
+          } 
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export { seedReviews, seedClubAttributes };

@@ -87,6 +87,8 @@ export interface ClubFullDTO {
 export interface ClubSearchDTO {
   id: number;
   name: string;
+  skillLevel: number;
+  competitionLevel: number;
   ratings: number;
   likedPercent: number;
 }

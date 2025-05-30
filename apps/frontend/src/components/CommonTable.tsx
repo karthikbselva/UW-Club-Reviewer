@@ -12,16 +12,11 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-
-type Club = {
-  id: number,
-  name: string;
-  ratings: number;
-  likedPercent: number;
-};
+import { ClubSearchDTO } from "../../types";
+import LevelBars from "./LevelBar";
 
 type ProductTableProps = {
-  clubs: Club[];
+  clubs: ClubSearchDTO[];
 };
 
 const ClubTable: React.FC<ProductTableProps> = ({ clubs }) => {
@@ -56,8 +51,10 @@ const ClubTable: React.FC<ProductTableProps> = ({ clubs }) => {
         <Thead>
           <Tr>
             <Th>Name</Th>
+            <Th>Skill Level</Th>
+            <Th>Competition Level</Th>
             <Th>Ratings</Th>
-            <Th>Liked %</Th>
+            <Th>Liked</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -73,6 +70,16 @@ const ClubTable: React.FC<ProductTableProps> = ({ clubs }) => {
                     {club.name}
                   </Text>
                 </Link>
+              </Td>
+              <Td textAlign="center" verticalAlign="middle">
+                <HStack spacing={2} justify="center">
+                    <LevelBars level={club.skillLevel} />
+                </HStack> 
+              </Td>
+              <Td textAlign="center">
+                <HStack justify="center">
+                  <LevelBars level={club.competitionLevel} />
+                </HStack>
               </Td>
               <Td>
                 <Text color="gray.600">{club.ratings}</Text>

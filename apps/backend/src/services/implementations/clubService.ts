@@ -143,6 +143,8 @@ class ClubService implements IClubService {
       return {
         id: club.id,
         name: club.name,
+        skillLevel: club.skill_level,
+        competitionLevel: club.competition_level,
         ratings: totalReviewLength,
         likedPercent: (totalReviewLength == 0) ? 0 : Math.round((likedReviewLength / totalReviewLength) * 100),
       }
@@ -213,81 +215,90 @@ class ClubService implements IClubService {
   ): Promise<UpdateClubResponseDTO> {
     const t: Transaction = await sequelize.transaction();
 
-    const club = await ClubModel.findByPk(clubId);
-    if (!club) throw new Error(`Club with ID ${clubId} not found`);
-
-    const schedule = await club.$get("schedule");
-    if (!schedule)
-      throw new Error(
-        `Associated schedule for club with ID ${clubId} not found`,
-      );
-
-    const social = await club.$get("social");
-    if (!social)
-      throw new Error(
-        `Associated socials for club with ID ${clubId} not found`,
-      );
-
-    await club.update(
-      {
-        name: clubDTO.name ?? club.name,
-        description: clubDTO.description ?? club.description,
-        competition_level: clubDTO.competitionLevel ?? club.competition_level,
-        skill_level: clubDTO.skillLevel ?? club.skill_level,
-        categories: clubDTO.categories ?? club.categories,
-        is_active: clubDTO.isActive ?? club.is_active,
-        banner_photo: clubDTO.bannerPhoto ?? club.banner_photo,
-      },
-      { transaction: t },
-    );
-
-    if (clubDTO.schedule) {
-      await schedule.update(
-        {
-          sunday: clubDTO.schedule.sunday,
-          monday: clubDTO.schedule.monday,
-          tuesday: clubDTO.schedule.tuesday,
-          wednesday: clubDTO.schedule.wednesday,
-          thursday: clubDTO.schedule.thursday,
-          friday: clubDTO.schedule.friday,
-          saturday: clubDTO.schedule.saturday,
-        },
-        { transaction: t },
-      );
-    }
-
-    if (clubDTO.social) {
-      await social.update(
-        {
-          email: clubDTO.social.email,
-          instagram: clubDTO.social.instagram,
-          tiktok: clubDTO.social.tiktok,
-          youtube: clubDTO.social.youtube,
-          facebook: clubDTO.social.facebook,
-          linkedin: clubDTO.social.linkedin,
-          discord: clubDTO.social.discord,
-        },
-        { transaction: t },
-      );
-    }
-
+    let club;
+    let schedule;
+    let social;
     let categoriesObject: CategoryDTO[] = []; // declare for safe return
-    if (clubDTO.categories) {
-      const categoryModelsArray = await Promise.all(
-        clubDTO.categories.map((category) =>
-          CategoryModel.findOrCreate({
-            where: { name: category },
-            transaction: t,
-          }).then(([categoryModel]) => {
+    try {
+      club = await ClubModel.findByPk(clubId);
+      if (!club) throw new Error(`Club with ID ${clubId} not found`);
+
+      schedule = await club.$get("schedule");
+      if (!schedule)
+        throw new Error(
+          `Associated schedule for club with ID ${clubId} not found`,
+        );
+
+      social = await club.$get("social");
+      if (!social)
+        throw new Error(
+          `Associated socials for club with ID ${clubId} not found`,
+        );
+
+      await club.update(
+        {
+          name: clubDTO.name ?? club.name,
+          description: clubDTO.description ?? club.description,
+          competition_level: clubDTO.competitionLevel ?? club.competition_level,
+          skill_level: clubDTO.skillLevel ?? club.skill_level,
+          categories: clubDTO.categories ?? club.categories,
+          is_active: clubDTO.isActive ?? club.is_active,
+          banner_photo: clubDTO.bannerPhoto ?? club.banner_photo,
+        },
+        { transaction: t },
+      );
+
+      if (clubDTO.schedule) {
+        await schedule.update(
+          {
+            sunday: clubDTO.schedule.sunday,
+            monday: clubDTO.schedule.monday,
+            tuesday: clubDTO.schedule.tuesday,
+            wednesday: clubDTO.schedule.wednesday,
+            thursday: clubDTO.schedule.thursday,
+            friday: clubDTO.schedule.friday,
+            saturday: clubDTO.schedule.saturday,
+          },
+          { transaction: t },
+        );
+      }
+
+      if (clubDTO.social) {
+        await social.update(
+          {
+            email: clubDTO.social.email,
+            instagram: clubDTO.social.instagram,
+            tiktok: clubDTO.social.tiktok,
+            youtube: clubDTO.social.youtube,
+            facebook: clubDTO.social.facebook,
+            linkedin: clubDTO.social.linkedin,
+            discord: clubDTO.social.discord,
+          },
+          { transaction: t },
+        );
+      }
+
+
+      if (clubDTO.categories) {
+        const categoryModelsArray = await Promise.all(
+          clubDTO.categories.map(async (category) => {
+            const [categoryModel] = await CategoryModel.findOrCreate({
+              where: { name: category },
+              transaction: t,
+            });
             return categoryModel;
           }),
-        ),
-      );
-      await club.$add("categories", categoryModelsArray);
-      categoriesObject = (await club.$get("categories")).map((category) => ({
-        id: category.id,
-        name: category.name as CategoryType,
-      }));
+        );
+        await club.$add("categories", categoryModelsArray, { transaction: t });
+        categoriesObject = (await club.$get("categories", { transaction: t })).map((category) => ({
+          id: category.id,
+          name: category.name as CategoryType,
+        }));
+      }
+      await t.commit();
+    } catch (error) {
+      await t.rollback();
+      throw error;
     }
 
     return {

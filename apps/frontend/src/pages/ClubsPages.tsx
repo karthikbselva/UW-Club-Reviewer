@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import ReviewAPIClient from "../APIClients/ReviewAPIClient";
 import ClubAPIClient from "../APIClients/ClubAPIClient";
-import { ClubDTO, ReviewDTO } from "../../types";
+import { ClubFullDTO, ReviewDTO } from "../../types";
 import CustomModal from "../components/ModalContainer";
 import ReviewDisplay from "../components/ReviewDisplay";
 import ClubInfo from "../components/ClubInfo";
@@ -31,7 +31,7 @@ const ClubsPage = () => {
   const [comment, setComment] = useState<string>("");
   const [reaction, setReaction] = useState<"like" | "dislike" | null>(null);
 
-  const [club, setClub] = useState<ClubDTO | null>(null);
+  const [club, setClub] = useState<ClubFullDTO | null>(null);
   const [reviews, setReviews] = useState<ReviewDTO[]>([]);
   const [reviewCount, setReviewCount] = useState<number>(0);
   const [likedPercent, setLikedPercent] = useState<number>(0);
@@ -120,8 +120,9 @@ const ClubsPage = () => {
                 description={club.description}
                 likedPercent={likedPercent}
                 ratings={reviewCount}
-                skillLevel="Intermediate"
-                competitionLevel="Beginner"
+                skillLevel={club.skillLevel}
+                competitionLevel={club.competitionLevel}
+                socials={Object.entries(club.social).filter(([key, link]) => (key !== "id" && key !== "clubId" && link !== null))}
               />
             </Flex>
           </Container>

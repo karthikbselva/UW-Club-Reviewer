@@ -3,23 +3,12 @@ import React from "react";
 import { HStack, Box } from "@chakra-ui/react";
 
 type LevelBarsProps = {
-  level: "Beginner" | "Intermediate" | "Advanced";
+  level: number;
 };
 
 const LevelBars: React.FC<LevelBarsProps> = ({ level }) => {
   // Determine number of filled bars
-  let filledBars = 0;
-  switch (level) {
-    case "Beginner":
-      filledBars = 1;
-      break;
-    case "Intermediate":
-      filledBars = 2;
-      break;
-    case "Advanced":
-      filledBars = 3;
-      break;
-  }
+  let filledBars = level;
 
   return (
     <HStack spacing={1}>
