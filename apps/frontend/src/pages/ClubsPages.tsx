@@ -6,7 +6,7 @@ import { ClubDTO, ReviewDTO } from "../../types";
 import CustomModal from "../components/ModalContainer";
 import ReviewDisplay from "../components/ReviewDisplay";
 import ClubAPIClient from "../APIClients/ClubAPIClient";
-import ClubInfo from "../components/ClubDisplayCard";
+import ClubInfo from "../components/ClubInfo";
 
 const ClubsPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -55,8 +55,17 @@ const ClubsPage = () => {
   return (
     
     <Box p={4}>
-      
-
+      {club && (
+        <ClubInfo
+          title={club.name}
+          description={club.description}
+          likedPercent={90}
+          comments={reviews.length}
+          ratings={50}
+          skillLevel="Intermediate"
+          competitionLevel= "Beginner"
+        />
+      )}
       <Box mt={4}>
         {reviews.length === 0 ? (
           <Text>No reviews yet.</Text>
