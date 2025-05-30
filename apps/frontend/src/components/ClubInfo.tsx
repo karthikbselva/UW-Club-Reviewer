@@ -14,7 +14,6 @@ type ClubInfoProps = {
   title: string;
   description: string;
   likedPercent: number;
-  comments: number;
   ratings: number;
   skillLevel: "Beginner" | "Intermediate" | "Advanced";
   competitionLevel: "Beginner" | "Intermediate" | "Advanced";
@@ -24,7 +23,6 @@ const ClubInfo: React.FC<ClubInfoProps> = ({
   title,
   description,
   likedPercent,
-  comments,
   ratings,
   skillLevel,
   competitionLevel,
@@ -92,9 +90,6 @@ const ClubInfo: React.FC<ClubInfoProps> = ({
         </CircularProgress>
 
         <VStack spacing={1} mt={2} fontSize="sm">
-          <Text color="blue.500" fontWeight="medium" cursor="pointer">
-            {comments} comments
-          </Text>
           <Text color="gray.500">{ratings} ratings</Text>
         </VStack>
       </Box>

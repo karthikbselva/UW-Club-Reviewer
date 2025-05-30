@@ -108,7 +108,6 @@ const ClubsPage = () => {
           title={club.name}
           description={club.description}
           likedPercent={90} // Placeholder - replace with actual data if needed
-          comments={reviews.length}
           ratings={50} // Placeholder - replace with actual data if needed
           skillLevel="Intermediate"
           competitionLevel="Beginner"
