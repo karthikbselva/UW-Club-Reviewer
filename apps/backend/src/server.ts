@@ -19,3 +19,5 @@ app.listen({ port: process.env.PORT || 8080 }, () => {
 });
 
 sequelize.sync({ alter: true });
+
+//createAllClubs();
