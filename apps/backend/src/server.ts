@@ -5,6 +5,7 @@ import clubRouter from "./rest/clubRoutes";
 import reviewRouter from "./rest/reviewRoutes";
 import voteRouter from "./rest/voteRoutes";
 import { createAllClubs, scrapeForClubLinks } from "./clubScraper";
+import { seedReviews } from "./seedingScripts";
 
 const app = express();
 
@@ -30,3 +31,4 @@ app.listen({ port: process.env.PORT || 8080 }, () => {
 //sequelize.sync({ force: true });
 
 //createAllClubs();
+// seedReviews();
