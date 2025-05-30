@@ -55,5 +55,22 @@ const remove = async (id: number): Promise<void> => {
     }
 };
 
+const getReviewSum = async (clubId: number): Promise<void> => {
+    try {
+        const { data } = await baseAPIClient.get(`/reviews/sum/${clubId}`);
+        return data;
+    } catch (error) {
+        throw new Error(`Failed to get review sum. ${ error instanceof Error ? error.message : "Unknown error occured."}`);
+    }
+}
 
-export default { get, getAll, create, update, remove };
+const getLikedPercentage = async (clubId: number): Promise<void> => {
+    try {
+        const { data } = await baseAPIClient.get(`/reviews/percentage/${clubId}`);
+        return data;
+    } catch (error) {
+        throw new Error(`Failed to get liked percentage. ${ error instanceof Error ? error.message : "Unknown error occured."}`);
+    }
+}
+
+export default { get, getAll, create, update, remove, getReviewSum, getLikedPercentage };

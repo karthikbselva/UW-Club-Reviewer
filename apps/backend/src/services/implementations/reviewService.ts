@@ -74,6 +74,29 @@ class reviewService implements IReviewService {
 
     existingReview.destroy();
   }
-}
+  async getReviewSum(clubId: number): Promise<number> {
+    const reviews = await ReviewModel.findAll({ where: { club_id: clubId } });
 
+    if (!reviews) {
+      throw new Error(`Reviews with ClubId ${clubId} not found`);
+    }
+
+    return reviews.length;
+  }
+
+  async getLikedPercentage(clubId: number): Promise<number> {
+    const reviews = await ReviewModel.findAll({ where: { club_id: clubId } });
+
+    if (!reviews) {
+      throw new Error(`Reviews with ClubId ${clubId} not found`);
+    }
+
+    const totalReviewLength = reviews.length;
+    if (totalReviewLength == 0) return 0;
+    const likedReviews = reviews.filter((review) => (review.likes_club));
+    const likedReviewLength = likedReviews.length;
+
+    return likedReviewLength / totalReviewLength;
+  }
+}
 export default reviewService;
