@@ -23,6 +23,14 @@ export default class Review extends Model {
   //@BelongsTo(() => User)
   //user!: User;
 
+  //@Index({ name: "user_club_id", unique: true })
+  @ForeignKey(() => Club)
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  club_id!: number;
+
+  @BelongsTo(() => Club)
+  club!: Club;
+
   @Column({ type: DataType.TEXT, allowNull: false })
   comment!: string;
 

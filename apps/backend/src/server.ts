@@ -18,6 +18,6 @@ app.listen({ port: process.env.PORT || 8080 }, () => {
   console.info(`Server is listening on port ${process.env.PORT || 8080}!`);
 });
 
-sequelize.sync({ alter: true });
+//sequelize.sync({ force: true });
 
-//createAllClubs();
+createAllClubs();
