@@ -130,13 +130,13 @@ export interface UserDTO {
   profilePhoto: string | null;
 }
 
-export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto"> & {
+/*export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto"> & {
   newPassword: Password;
 };
 
 export type UpdateUserDTO = Omit<UserDTO, "id" | "email"> & {
     updatedPassword: Password;
-};
+};*/
 
 export interface ReviewDTO {
   id: number;
