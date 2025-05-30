@@ -24,14 +24,21 @@ const getAll = async (): Promise<ReviewDTO[]> => {
 };
 
 const create = async (formData: CreateReviewDTO): Promise<ReviewDTO> => {
-    try {
-       const { data } = await baseAPIClient.post(`/reviews`, formData); 
-       return data;
-    } catch (error) {
-        throw new Error(
-            `Failed to create review. ${ error instanceof Error ? error.message : "Unknown error occured."}`
-        )
-    }
+  try {
+    // Convert camelCase keys to snake_case
+    const formattedData = {
+      club_id: formData.clubId,
+      comment: formData.comment,
+      likes_club: formData.likesClub,
+    };
+
+    const { data } = await baseAPIClient.post(`/reviews`, formattedData);
+    return data;
+  } catch (error) {
+    throw new Error(
+      `Failed to create review. ${error instanceof Error ? error.message : "Unknown error occurred."}`
+    );
+  }
 };
 
 const update = async (id: number, formData: UpdateReviewDTO): Promise<ReviewDTO> => {

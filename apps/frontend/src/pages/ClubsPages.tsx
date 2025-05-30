@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Button, HStack, Text, Textarea, useDisclosure, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Text,
+  Textarea,
+  useDisclosure,
+  VStack,
+} from "@chakra-ui/react";
 import ReviewAPIClient from "../APIClients/ReviewAPIClient";
 import { ClubDTO, ReviewDTO } from "../../types";
 import CustomModal from "../components/ModalContainer";
@@ -39,31 +47,71 @@ const ClubsPage = () => {
     }
   };
 
+  interface ReviewInput {
+    club_id: number;
+    comment: string;
+    likes_club: boolean;
+  }
+
+  const addReview = async (review: ReviewInput): Promise<void> => {
+    try {
+      const response = await ReviewAPIClient.create({
+        clubId: review.club_id,
+        comment: review.comment,
+        likesClub: review.likes_club,
+      });
+      console.log("Review added:", response);
+    } catch (error) {
+      console.error("Error adding review:", error);
+    }
+  };
+
   useEffect(() => {
     fetchReviews();
     fetchClubById();
   }, [id]);
 
-  const handleConfirm = () => {
-    console.log("Comment:", comment);
-    console.log("Reaction:", reaction);
-    onClose();
-    setComment("");
-    setReaction(null);
+  const handleConfirm = async () => {
+    if (!reaction) {
+      console.log("Please select a reaction (like/dislike).");
+      return;
+    }
+
+    if (!id) {
+      console.log("No club id available!");
+      return;
+    }
+
+    const newReview: ReviewInput = {
+      club_id: Number(id),
+      comment: comment,
+      likes_club: reaction === "like",
+    };
+
+    try {
+      await addReview(newReview);
+      console.log("Review submitted successfully!");
+      // 🔥 Fetch updated reviews list instead of reloading the page
+      await fetchReviews();
+      setComment("");
+      setReaction(null);
+      onClose();
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    }
   };
 
   return (
-    
     <Box p={4}>
       {club && (
         <ClubInfo
           title={club.name}
           description={club.description}
-          likedPercent={90}
+          likedPercent={90} // Placeholder - replace with actual data if needed
           comments={reviews.length}
-          ratings={50}
+          ratings={50} // Placeholder - replace with actual data if needed
           skillLevel="Intermediate"
-          competitionLevel= "Beginner"
+          competitionLevel="Beginner"
         />
       )}
       <Box mt={4}>
