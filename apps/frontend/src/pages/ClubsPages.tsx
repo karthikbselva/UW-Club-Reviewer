@@ -24,6 +24,8 @@ const ClubsPage = () => {
   const { id } = useParams();
   const [reviews, setReviews] = useState<ReviewDTO[]>([]);
   const [club, setClub] = useState<ClubDTO>();
+  const [reviewCount, setReviewCount] = useState<number>(0);
+  const [likedPercent, setLikedPercent] = useState(0);
 
   const fetchReviews = async () => {
     if (id != null) {
@@ -43,6 +45,28 @@ const ClubsPage = () => {
         setClub(response);
       } catch (error) {
         console.error("Error fetching club:", error);
+      }
+    }
+  };
+
+  const fetchReviewSummary = async () => {
+    if (id != null) {
+      try {
+        const reviewSum = await ReviewAPIClient.getReviewSum(Number(id));
+        setReviewCount(reviewSum);
+      } catch (error) {
+        console.error("Error fetching review count:", error);
+      }
+    }
+  };
+
+  const fetchLikedPercentage = async () => {
+    if (id != null) {
+      try {
+        const likedPercentage = await ReviewAPIClient.getLikedPercentage(Number(id));
+        setLikedPercent(likedPercentage);
+      } catch (error) {
+        console.error("Error fetching liked percentage:", error);
       }
     }
   };
@@ -67,8 +91,14 @@ const ClubsPage = () => {
   };
 
   useEffect(() => {
-    fetchReviews();
-    fetchClubById();
+    const fetchAllData = async () => {
+      await fetchClubById();
+      await fetchReviews();
+      await fetchReviewSummary();
+      await fetchLikedPercentage();
+    };
+
+    fetchAllData();
   }, [id]);
 
   const handleConfirm = async () => {
@@ -91,8 +121,10 @@ const ClubsPage = () => {
     try {
       await addReview(newReview);
       console.log("Review submitted successfully!");
-      // 🔥 Fetch updated reviews list instead of reloading the page
+      // 🔥 Re-fetch everything to update state dynamically
       await fetchReviews();
+      await fetchReviewSummary();
+      await fetchLikedPercentage();
       setComment("");
       setReaction(null);
       onClose();
@@ -107,61 +139,68 @@ const ClubsPage = () => {
         <ClubInfo
           title={club.name}
           description={club.description}
-          likedPercent={90} // Placeholder - replace with actual data if needed
-          ratings={50} // Placeholder - replace with actual data if needed
+          likedPercent={likedPercent}
+          ratings={reviewCount}
           skillLevel="Intermediate"
           competitionLevel="Beginner"
         />
       )}
-      <Box mt={4}>
-        {reviews.length === 0 ? (
-          <Text>No reviews yet.</Text>
-        ) : (
-          reviews.map((review, index) => (
-            <ReviewDisplay
-              key={index}
-              comment={review.comment}
-              reaction={review.likesClub ? "like" : "dislike"}
-            />
-          ))
-        )}
 
-        <Button colorScheme="blue" onClick={onOpen} mt={4}>
-          Add Review
-        </Button>
+      {/* Add Review Button BELOW club card, ABOVE reviews header */}
+      <Button colorScheme="blue" onClick={onOpen} mt={4}>
+        Add Review
+      </Button>
 
-        <CustomModal
-          title="Add Review"
-          onConfirm={handleConfirm}
-          confirmLabel="Submit"
-          isOpen={isOpen}
-          onClose={onClose}
-        >
-          <VStack align="start" spacing={4}>
-            <Text>Please enter your comment:</Text>
-            <Textarea
-              placeholder="Write your comment here..."
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-            <Text>Liked:</Text>
-            <HStack spacing={4}>
-              <Button
-                colorScheme={reaction === "like" ? "green" : "gray"}
-                onClick={() => setReaction("like")}
-              >
-                👍 Like
-              </Button>
-              <Button
-                colorScheme={reaction === "dislike" ? "red" : "gray"}
-                onClick={() => setReaction("dislike")}
-              >
-                👎 Dislike
-              </Button>
-            </HStack>
-          </VStack>
-        </CustomModal>
-      </Box>
+      {/* Reviews Header */}
+      <Text fontSize="xl" fontWeight="bold" mt={8} mb={4}>
+        Reviews
+      </Text>
+
+      {/* Reviews List */}
+      {reviews.length === 0 ? (
+        <Text>No reviews yet.</Text>
+      ) : (
+        reviews.map((review, index) => (
+          <ReviewDisplay
+            key={index}
+            comment={review.comment}
+            reaction={review.likesClub ? "like" : "dislike"}
+          />
+        ))
+      )}
+
+      {/* Modal for Adding Review */}
+      <CustomModal
+        title="Add Review"
+        onConfirm={handleConfirm}
+        confirmLabel="Submit"
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <VStack align="start" spacing={4}>
+          <Text>Please enter your comment:</Text>
+          <Textarea
+            placeholder="Write your comment here..."
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          />
+          <Text>Liked:</Text>
+          <HStack spacing={4}>
+            <Button
+              colorScheme={reaction === "like" ? "green" : "gray"}
+              onClick={() => setReaction("like")}
+            >
+              👍 Like
+            </Button>
+            <Button
+              colorScheme={reaction === "dislike" ? "red" : "gray"}
+              onClick={() => setReaction("dislike")}
+            >
+              👎 Dislike
+            </Button>
+          </HStack>
+        </VStack>
+      </CustomModal>
     </Box>
   );
 };

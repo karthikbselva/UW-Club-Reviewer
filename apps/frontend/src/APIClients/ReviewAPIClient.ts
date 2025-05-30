@@ -62,7 +62,7 @@ const remove = async (id: number): Promise<void> => {
     }
 };
 
-const getReviewSum = async (clubId: number): Promise<void> => {
+const getReviewSum = async (clubId: number): Promise<number> => {
     try {
         const { data } = await baseAPIClient.get(`/reviews/sum/${clubId}`);
         return data;
@@ -71,7 +71,7 @@ const getReviewSum = async (clubId: number): Promise<void> => {
     }
 }
 
-const getLikedPercentage = async (clubId: number): Promise<void> => {
+const getLikedPercentage = async (clubId: number): Promise<number> => {
     try {
         const { data } = await baseAPIClient.get(`/reviews/percentage/${clubId}`);
         return data;

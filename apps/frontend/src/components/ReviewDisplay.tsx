@@ -14,9 +14,6 @@ const ReviewDisplay: React.FC<ReviewDisplayProps> = ({
 }) => {
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} mt={4}>
-      <Text fontWeight="bold" mb={2}>
-        Review:
-      </Text>
       <Text mb={2}>{comment}</Text>
 
       <Box mt={2}>

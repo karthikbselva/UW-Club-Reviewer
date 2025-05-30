@@ -1,5 +1,5 @@
 // CourseInfo.tsx
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Text,
@@ -27,6 +27,15 @@ const ClubInfo: React.FC<ClubInfoProps> = ({
   skillLevel,
   competitionLevel,
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleDescription = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  // Round the likedPercent to the nearest whole number
+  const roundedLikedPercent = Math.round(likedPercent);
+
   return (
     <HStack spacing={2} align="stretch">
       {/* Main Card */}
@@ -44,9 +53,34 @@ const ClubInfo: React.FC<ClubInfoProps> = ({
           <Text fontSize="lg" fontWeight="bold" color="gray.700">
             {title}
           </Text>
-          <Text color="gray.600" fontSize="sm">
+          <Box
+            color="gray.600"
+            fontSize="sm"
+            sx={
+              !isExpanded
+                ? {
+                    display: "-webkit-box",
+                    WebkitLineClamp: "3",
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                  }
+                : {}
+            }
+          >
             {description}
-          </Text>
+          </Box>
+          {description.length > 0 && (
+            <Text
+              as="span"
+              color="blue.500"
+              cursor="pointer"
+              onClick={toggleDescription}
+              fontWeight="semibold"
+              mt={1}
+            >
+              {isExpanded ? "See less" : "See more"}
+            </Text>
+          )}
         </VStack>
 
         {/* Bottom info */}
@@ -76,14 +110,14 @@ const ClubInfo: React.FC<ClubInfoProps> = ({
         flexShrink="0"
       >
         <CircularProgress
-          value={likedPercent}
+          value={roundedLikedPercent}
           color="blue.500"
           size="70px"
           thickness="8px"
         >
           <CircularProgressLabel>
             <VStack spacing="0" lineHeight="1" fontSize="sm">
-              <Text>{likedPercent}%</Text>
+              <Text>{roundedLikedPercent}%</Text>
               <Text>liked</Text>
             </VStack>
           </CircularProgressLabel>
