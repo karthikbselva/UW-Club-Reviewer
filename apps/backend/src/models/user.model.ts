@@ -25,7 +25,7 @@ export default class User extends Model {
   profile_photo!: string | null;
 
   @HasOne(() => Password)
-  password_hash!: Password;
+  password!: Password;
 
   //@HasMany(() => Review)
   //reviews!: Review[];

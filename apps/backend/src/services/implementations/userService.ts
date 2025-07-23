@@ -113,7 +113,7 @@ class UserService implements IUserService {
                     term_of_study: user.termOfStudy ?? existingUser.term_of_study,
                     program_name: user.programName ?? existingUser.program_name,
                     profile_picture: user.profilePhoto ?? existingUser.profile_photo,
-                    password_hash: existingPassword ?? existingUser.password_hash,
+                    password_hash: existingPassword ?? existingUser.password,
                 }
             )
         } catch (error) {
