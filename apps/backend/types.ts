@@ -162,4 +162,5 @@ export interface VoteDTO {
   reviewId: number,
   voteValue: number,
 }
+
 export type AddVoteDTO = Omit<VoteDTO, "id">

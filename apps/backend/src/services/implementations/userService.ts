@@ -151,3 +151,5 @@ class UserService implements IUserService {
         }
     }
 }
+
+export default UserService;
