@@ -9,7 +9,7 @@ class UserService implements IUserService {
     async createUser(user: CreateUserDTO): Promise<UserDTO> {
         let newUser: UserModel;
         try {
-            const hashedPassword = hashSync(user.newPassword.password_hash, salt);
+            const hashedPassword = hashSync(user.newPassword, salt);
             newUser = await UserModel.create({
                 email: user.email,
                 first_name: user.firstName,
@@ -17,7 +17,6 @@ class UserService implements IUserService {
                 program_name: user.programName,
                 term_of_study: user.termOfStudy,
                 password_hash: {
-                    user_id: user.newPassword.user_id,
                     password_hash: hashedPassword,
                 }
             },
@@ -26,7 +25,6 @@ class UserService implements IUserService {
                         association: UserModel.associations.password_hash,
                     }],
                 }
-
             )
         } catch (error) {
             throw error;

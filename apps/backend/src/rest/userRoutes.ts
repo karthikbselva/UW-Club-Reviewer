@@ -15,4 +15,17 @@ userRouter.get("/:userId", async (req, res) => {
     }
 })
 
-
+userRouter.post("/", async (req, res) => {
+    try {
+        const newUser = await userService.createUser({
+            email: req.body.email,
+            firstName: req.body.first_name,
+            lastName: req.body.last_name,
+            programName: req.body.program_name,
+            termOfStudy: req.body.term_of_study,
+            newPassword: req.body.new_password,
+        })
+    } catch (error) {
+        res.status(400).json({error: "Unable to add user"})
+    }
+})

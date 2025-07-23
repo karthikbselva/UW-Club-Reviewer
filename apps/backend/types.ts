@@ -133,7 +133,7 @@ export interface UserDTO {
 }
 
 export type CreateUserDTO = Omit<UserDTO, "id" | "profilePhoto"> & {
-  newPassword: Password;
+  newPassword: string;
 };
 
 export type UpdateUserDTO = Omit<UserDTO, "id" | "email"> & {
