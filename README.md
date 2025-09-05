@@ -1,1 +1,1 @@
-# UW-Club-Reviewer 🤓
+# UW-Club-Reviewer
