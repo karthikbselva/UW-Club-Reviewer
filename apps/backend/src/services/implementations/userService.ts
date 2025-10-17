@@ -2,12 +2,14 @@ import { CreateUserDTO, UpdateUserDTO, UserDTO } from "../../../types";
 import IUserService from "../interfaces/userService";
 import UserModel from "../../models/user.model";
 import { genSaltSync, hashSync } from "bcrypt-ts";
-import Password from "../../models/password.model";
+import PasswordModel from "../../models/password.model";
 const salt = genSaltSync(10);
 
 class UserService implements IUserService {
     async createUser(user: CreateUserDTO): Promise<UserDTO> {
         let newUser: UserModel;
+        let newPassword: PasswordModel;
+        
         try {
             const hashedPassword = hashSync(user.newPassword, salt);
             newUser = await UserModel.create({
