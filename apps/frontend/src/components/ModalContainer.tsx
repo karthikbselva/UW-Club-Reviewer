@@ -9,6 +9,8 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Box,
+  Divider,
 } from "@chakra-ui/react";
 
 type CustomModalProps = {
@@ -29,19 +31,66 @@ const CustomModal: React.FC<CustomModalProps> = ({
   children,
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>{title}</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>{children}</ModalBody> {/* render children here */}
+    <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+      <ModalOverlay bg="blackAlpha.600" backdropFilter="blur(4px)" />
+      <ModalContent 
+        borderRadius="2xl" 
+        boxShadow="2xl"
+        border="1px solid"
+        borderColor="gray.200"
+        maxW="600px"
+      >
+        <ModalHeader 
+          fontSize="xl" 
+          fontWeight="bold" 
+          color="gray.800"
+          pb={2}
+        >
+          {title}
+        </ModalHeader>
+        <ModalCloseButton 
+          size="lg" 
+          color="gray.500"
+          _hover={{ color: "gray.700" }}
+        />
+        
+        <Divider borderColor="gray.200" />
+        
+        <ModalBody py={6}>
+          {children}
+        </ModalBody>
 
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onConfirm}>
+        <Divider borderColor="gray.200" />
+        
+        <ModalFooter py={4}>
+          <Button 
+            colorScheme="blue" 
+            mr={3} 
+            onClick={onConfirm}
+            borderRadius="full"
+            px={6}
+            fontWeight="semibold"
+            _hover={{
+              transform: "translateY(-1px)",
+              boxShadow: "lg",
+            }}
+            transition="all 0.2s"
+          >
             {confirmLabel}
           </Button>
-          <Button variant="ghost" onClick={onClose}>
-            Close
+          <Button 
+            variant="ghost" 
+            onClick={onClose}
+            borderRadius="full"
+            px={6}
+            color="gray.600"
+            _hover={{
+              bg: "gray.100",
+              color: "gray.800",
+            }}
+            transition="all 0.2s"
+          >
+            Cancel
           </Button>
         </ModalFooter>
       </ModalContent>

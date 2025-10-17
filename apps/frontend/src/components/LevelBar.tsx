@@ -15,10 +15,14 @@ const LevelBars: React.FC<LevelBarsProps> = ({ level }) => {
       {[1, 2, 3].map((bar) => (
         <Box
           key={bar}
-          w="8px"
-          h="8px"
+          w="10px"
+          h="10px"
           bg={bar <= filledBars ? "blue.500" : "gray.300"}
           borderRadius="sm"
+          transition="all 0.2s"
+          _hover={{
+            transform: "scale(1.1)",
+          }}
         />
       ))}
     </HStack>

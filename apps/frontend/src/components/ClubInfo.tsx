@@ -7,7 +7,15 @@ import {
   CircularProgress,
   CircularProgressLabel,
   Link,
+  Card,
+  CardBody,
+  Badge,
+  Icon,
+  Flex,
+  Divider,
+  Tooltip,
 } from "@chakra-ui/react";
+import { ExternalLink, Users, Star, TrendingUp, Award } from "lucide-react";
 import LevelBars from "./LevelBar";
 import { SocialDTO } from "../../types";
 
@@ -39,112 +47,203 @@ const ClubInfo: React.FC<ClubInfoProps> = ({
   const roundedLikedPercent = Math.round(likedPercent);
 
   return (
-    <HStack spacing={4} align="stretch" w="100%">
-      {/* Main Card */}
-      <Box
-        bg="white"
-        p={4}
-        borderRadius="md"
-        boxShadow="md"
-        w="75%"
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-      >
-        <VStack align="start" spacing={2} flexGrow={1}>
-          <Text fontSize="2xl" fontWeight="bold" color="gray.700">
-            {title}
-          </Text>
-          <Box
-            color="gray.600"
-            fontSize="sm"
-            sx={
-              !isExpanded
-                ? {
-                    display: "-webkit-box",
-                    WebkitLineClamp: "3",
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
+    <Card 
+      borderRadius="2xl" 
+      boxShadow="xl" 
+      bg="white" 
+      overflow="hidden"
+      border="1px solid"
+      borderColor="whiteAlpha.200"
+      backdropFilter="blur(10px)"
+    >
+      <CardBody p={0}>
+        <Flex direction={{ base: "column", lg: "row" }} minH="300px">
+          {/* Main Content */}
+          <Box flex="1" p={8}>
+            <VStack align="start" spacing={6} h="full">
+              {/* Title and Description */}
+              <VStack align="start" spacing={4} flex="1">
+                <VStack align="start" spacing={2}>
+                  <Text 
+                    fontSize={{ base: "2xl", md: "3xl" }} 
+                    fontWeight="bold" 
+                    color="gray.800"
+                    lineHeight="1.2"
+                  >
+                    {title}
+                  </Text>
+                  
+                  {/* Stats Row */}
+                  <HStack spacing={6} wrap="wrap">
+                    <HStack spacing={2}>
+                      <Icon as={Star} color="yellow.500" boxSize={4} />
+                      <Text color="gray.600" fontSize="sm" fontWeight="medium">
+                        {ratings} reviews
+                      </Text>
+                    </HStack>
+                    <HStack spacing={2}>
+                      <Icon as={Users} color="blue.500" boxSize={4} />
+                      <Text color="gray.600" fontSize="sm" fontWeight="medium">
+                        {roundedLikedPercent}% liked
+                      </Text>
+                    </HStack>
+                  </HStack>
+                </VStack>
+
+                {/* Description */}
+                <Box
+                  color="gray.600"
+                  fontSize="md"
+                  lineHeight="1.6"
+                  sx={
+                    !isExpanded
+                      ? {
+                          display: "-webkit-box",
+                          WebkitLineClamp: "4",
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }
+                      : {}
                   }
-                : {}
-            }
-          >
-            {description.split('\n').map((para, i) => (
-  <p key={i}>{para}</p>
-))}
-          </Box>
-          {description.length > 0 && (
-            <Text
-              as="span"
-              color="blue.500"
-              cursor="pointer"
-              onClick={toggleDescription}
-              fontWeight="semibold"
-              mt={1}
-            >
-              {isExpanded ? "See less" : "See more"}
-            </Text>
-          )}
-        </VStack>
+                >
+                  {description.split('\n').map((para, i) => (
+                    <Text key={i} mb={2}>{para}</Text>
+                  ))}
+                </Box>
+                
+                {description.length > 0 && (
+                  <Text
+                    as="span"
+                    color="blue.500"
+                    cursor="pointer"
+                    onClick={toggleDescription}
+                    fontWeight="semibold"
+                    fontSize="sm"
+                    _hover={{ color: "blue.600" }}
+                    transition="color 0.2s"
+                  >
+                    {isExpanded ? "Show less" : "Show more"}
+                  </Text>
+                )}
+              </VStack>
 
-        {/* Bottom info */}
-        <VStack align="start" spacing={2} mt={4} fontSize="sm" minW="200px">
-          <HStack spacing={4} align="center" width="100%">
-            <Text color="gray.600" minW="90px" textAlign="left">Skill:</Text>
-            <LevelBars level={skillLevel} />
-          </HStack>
-          <HStack spacing={4} align="center" width="100%">
-            <Text color="gray.600" minW="90px" textAlign="left">Competition:</Text>
-            <LevelBars level={competitionLevel} />
-          </HStack>
-          <VStack spacing={1} align="start" width="100%" mt={4}>
-      {socials.map(([social, link]) => (
-        <HStack key={social} spacing={2}>
-          <Text fontWeight="bold" textTransform="capitalize" minW="90px" color="gray.600">
-            {social}:
-          </Text>
-          <Link href={link} color="blue.500" isExternal>
-            {link}
-          </Link>
-        </HStack>
-      ))}
-    </VStack>
+              {/* Skills and Social Links */}
+              <VStack align="start" spacing={4} w="full">
+                <Divider borderColor="gray.300" />
+                
+                {/* Skill Levels */}
+                <VStack align="start" spacing={3} w="full">
+                  <HStack spacing={3} align="center">
+                    <Icon as={TrendingUp} color="blue.500" boxSize={4} />
+                    <Text color="gray.700" fontWeight="semibold" fontSize="sm">
+                      Skill Level
+                    </Text>
+                    <LevelBars level={skillLevel} />
+                  </HStack>
+                  
+                  <HStack spacing={3} align="center">
+                    <Icon as={Award} color="purple.500" boxSize={4} />
+                    <Text color="gray.700" fontWeight="semibold" fontSize="sm">
+                      Competition Level
+                    </Text>
+                    <LevelBars level={competitionLevel} />
+                  </HStack>
+                </VStack>
 
-        </VStack>
-      </Box>
-
-      {/* Liked Box */}
-      <Box
-        bg="white"
-        p={4}
-        borderRadius="md"
-        boxShadow="md"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        minW="120px"
-        flexShrink="0"
-      >
-        <CircularProgress
-          value={roundedLikedPercent}
-          color="blue.500"
-          size="70px"
-          thickness="8px"
-        >
-          <CircularProgressLabel>
-            <VStack spacing="0" lineHeight="1" fontSize="sm">
-              <Text>{roundedLikedPercent}%</Text>
-              <Text>liked</Text>
+                {/* Social Links */}
+                {socials.length > 0 && (
+                  <>
+                    <Divider borderColor="gray.300" />
+                    <VStack align="start" spacing={2} w="full">
+                      <Text color="gray.700" fontWeight="semibold" fontSize="sm">
+                        Connect with us
+                      </Text>
+                      <HStack spacing={3} wrap="wrap">
+                        {socials.map(([social, link]) => (
+                          <Tooltip key={social} label={`Visit our ${social}`} hasArrow>
+                            <Link 
+                              href={link} 
+                              isExternal
+                              color="blue.500"
+                              _hover={{ 
+                                color: "blue.600",
+                                textDecoration: "underline"
+                              }}
+                              fontSize="sm"
+                              display="flex"
+                              alignItems="center"
+                              gap={1}
+                              transition="all 0.2s"
+                            >
+                              <Text textTransform="capitalize" fontWeight="medium">
+                                {social}
+                              </Text>
+                              <Icon as={ExternalLink} boxSize={3} />
+                            </Link>
+                          </Tooltip>
+                        ))}
+                      </HStack>
+                    </VStack>
+                  </>
+                )}
+              </VStack>
             </VStack>
-          </CircularProgressLabel>
-        </CircularProgress>
+          </Box>
 
-        <VStack spacing={1} mt={2} fontSize="sm">
-          <Text color="gray.500">{ratings} ratings</Text>
-        </VStack>
-      </Box>
-    </HStack>
+          {/* Rating Card */}
+          <Box 
+            bg="whiteAlpha.100" 
+            backdropFilter="blur(10px)"
+            borderLeft={{ base: "none", lg: "1px solid" }}
+            borderTop={{ base: "1px solid", lg: "none" }}
+            borderColor="whiteAlpha.200"
+            p={8}
+            minW="200px"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <VStack spacing={4}>
+              {/* Circular Progress */}
+              <Box position="relative">
+                <CircularProgress
+                  value={roundedLikedPercent}
+                  color="white"
+                  size="100px"
+                  thickness="6px"
+                  trackColor="whiteAlpha.300"
+                >
+                  <CircularProgressLabel>
+                    <VStack spacing={0} lineHeight="1">
+                      <Text fontSize="lg" fontWeight="bold" color="white">
+                        {roundedLikedPercent}%
+                      </Text>
+                      <Text fontSize="xs" color="whiteAlpha.800">
+                        liked
+                      </Text>
+                    </VStack>
+                  </CircularProgressLabel>
+                </CircularProgress>
+              </Box>
+
+              {/* Rating Badge */}
+              <Badge 
+                colorScheme="green" 
+                variant="solid" 
+                px={3} 
+                py={1} 
+                borderRadius="full"
+                fontSize="sm"
+                fontWeight="semibold"
+              >
+                {ratings} reviews
+              </Badge>
+            </VStack>
+          </Box>
+        </Flex>
+      </CardBody>
+    </Card>
   );
 };
 
