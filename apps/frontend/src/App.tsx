@@ -119,35 +119,7 @@ const App = () => {
               </Text>
               
               {/* Stats */}
-              <HStack spacing={8} wrap="wrap" justify="center" mt={4}>
-                <VStack spacing={1}>
-                  <Icon as={Users} boxSize={8} color="whiteAlpha.800" />
-                  <Text fontSize="2xl" fontWeight="bold" color="white">
-                    {clubs.length}
-                  </Text>
-                  <Text fontSize="sm" color="whiteAlpha.800">
-                    Active Clubs
-                  </Text>
-                </VStack>
-                <VStack spacing={1}>
-                  <Icon as={Star} boxSize={8} color="yellow.300" />
-                  <Text fontSize="2xl" fontWeight="bold" color="white">
-                    {clubs.reduce((sum, club) => sum + club.ratings, 0)}
-                  </Text>
-                  <Text fontSize="sm" color="whiteAlpha.800">
-                    Total Reviews
-                  </Text>
-                </VStack>
-                <VStack spacing={1}>
-                  <Icon as={TrendingUp} boxSize={8} color="green.300" />
-                  <Text fontSize="2xl" fontWeight="bold" color="white">
-                    {Math.round(clubs.reduce((sum, club) => sum + club.likedPercent, 0) / clubs.length)}%
-                  </Text>
-                  <Text fontSize="sm" color="whiteAlpha.800">
-                    Avg. Satisfaction
-                  </Text>
-                </VStack>
-              </HStack>
+              
             </VStack>
           </Container>
         </Box>
@@ -165,14 +137,7 @@ const App = () => {
                 >
                   All Clubs
                 </Heading>
-                <HStack spacing={4} wrap="wrap" justify={{ base: "center", md: "start" }}>
-                  <Badge colorScheme="blue" variant="subtle" fontSize="sm" px={3} py={1}>
-                    {clubs.length} clubs available
-                  </Badge>
-                  <Badge colorScheme="green" variant="subtle" fontSize="sm" px={3} py={1}>
-                    {clubs.filter(club => club.ratings > 0).length} with reviews
-                  </Badge>
-                </HStack>
+               
               </VStack>
             </Flex>
 
